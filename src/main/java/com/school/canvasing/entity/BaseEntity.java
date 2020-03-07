@@ -13,8 +13,8 @@ public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(columnDefinition="row_id")
-	private long rowId;
+	@Column(columnDefinition="id")
+	private long id;
 
 	@Column(name = "created_time")
 	private LocalDateTime createdTime;
@@ -22,29 +22,31 @@ public class BaseEntity {
 	@Column(name = "updated_time")
 	private LocalDateTime updatedTime;
 
-	public long getRowId() {
-		return rowId;
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
 	}
 
-	public LocalDateTime getUpdatedTime() {
-		return updatedTime;
-	}
-
-	public void setRowId(long rowId) {
-		this.rowId = rowId;
-	}
-
 	public void setCreatedTime(LocalDateTime createdTime) {
 		this.createdTime = createdTime;
+	}
+
+	public LocalDateTime getUpdatedTime() {
+		return updatedTime;
 	}
 
 	public void setUpdatedTime(LocalDateTime updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+
+	
 
 	
 

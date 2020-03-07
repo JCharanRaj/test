@@ -51,7 +51,7 @@ public class SchoolMemberService {
 		}
 
 		ViewResponse viewResponse = new ViewResponse();
-		viewResponse.setId(schoolMember.getRowId());
+		viewResponse.setId(schoolMember.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.USER_LOGIN.replace("<role>", schoolMember.getRole()));
 		viewResponse.setRole(schoolMember.getRole());
@@ -73,7 +73,7 @@ public class SchoolMemberService {
 		member.setName(createMemberRequest.getName());
 		schoolMemberRepository.save(member);
 		ViewResponse viewResponse = new ViewResponse();
-		viewResponse.setId(member.getRowId());
+		viewResponse.setId(member.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.USER_CREATED.replace("<role>", member.getRole()));
 		viewResponse.setRole(member.getRole());
@@ -101,7 +101,7 @@ public class SchoolMemberService {
 
 	private ViewTeacher getTeacher(SchoolMember member) {
 		ViewTeacher teacher = new ViewTeacher();
-		teacher.setId(member.getRowId());
+		teacher.setId(member.getId());
 		teacher.setLatitude(member.getLatitude());
 		teacher.setLongitude(member.getLongitude());
 		teacher.setName(member.getName());
@@ -123,7 +123,7 @@ public class SchoolMemberService {
 		member.setUpdatedTime(DateAndTimeUtil.now());
 		schoolMemberRepository.save(member);
 		ViewResponse viewResponse = new ViewResponse();
-		viewResponse.setId(member.getRowId());
+		viewResponse.setId(member.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.UPDATE_TEACHER_LOCATION);
 		viewResponse.setRole(member.getRole());

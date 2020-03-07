@@ -26,6 +26,10 @@ public class SchoolMember extends BaseEntity{
 	
 	@Column(name="latitude")
 	private String latitude;
+	
+	@Column(name="status")
+	private String status;
+	
 
 	public String getMobileNumber() {
 		return mobileNumber;
@@ -73,6 +77,14 @@ public class SchoolMember extends BaseEntity{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	
