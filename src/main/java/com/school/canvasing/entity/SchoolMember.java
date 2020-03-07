@@ -66,6 +66,14 @@ public class SchoolMember extends BaseEntity{
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	
 }

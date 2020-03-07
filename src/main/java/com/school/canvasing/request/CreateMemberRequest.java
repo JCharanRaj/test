@@ -7,7 +7,7 @@ public class CreateMemberRequest {
 	private String mobileNumber;
 	private String password;
 	private SchoolMemberRole role;
-	
+	private String name;
 	
 	public String getMobileNumber() {
 		return mobileNumber;
@@ -26,6 +26,12 @@ public class CreateMemberRequest {
 	}
 	public void setRole(SchoolMemberRole role) {
 		this.role = role;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 

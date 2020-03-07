@@ -14,7 +14,7 @@ public class Parent extends BaseEntity{
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "name")
+	@Column(name = "mobile_number")
 	private String mobileNumber;
 	
 	@Column(name = "age")

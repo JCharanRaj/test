@@ -1,23 +1,15 @@
-package com.school.canvasing.view;
+package com.school.canvasing.request;
 
-public class ViewTeacher {
-
-	private long id;
-	private String name;
-	private String longitude;
-	private String latitude;
+public class UpdateTeacherLocation {
 	
+	private long id;
+	private String longitude;	
+	private String latitude;
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getLongitude() {
 		return longitude;
@@ -32,5 +24,6 @@ public class ViewTeacher {
 		this.latitude = latitude;
 	}
 	
-
+	
 }
+
