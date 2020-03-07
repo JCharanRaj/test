@@ -26,6 +26,21 @@ public class Student extends BaseEntity {
 	@Column(name = "gender")
 	private Gender gender;
 
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "parent_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Parent parent;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "teacher_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private SchoolMember teacher;
+	
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -49,17 +64,22 @@ public class Student extends BaseEntity {
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
+
+	public Parent getParent() {
+		return parent;
+	}
+
+	public void setParent(Parent parent) {
+		this.parent = parent;
+	}
+
+	public SchoolMember getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(SchoolMember teacher) {
+		this.teacher = teacher;
+	}
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "parent_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Parent parent;
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "teacher_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private SchoolMember teacher;
 	
 }
