@@ -18,6 +18,9 @@ public class SchoolMember extends BaseEntity{
 	@Column(name="role")
 	private String role;
 	
+	@Column(name="name")
+	private String name;
+	
 	@Column(name="longitude")
 	private String longitude;
 	

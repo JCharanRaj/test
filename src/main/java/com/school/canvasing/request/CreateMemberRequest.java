@@ -7,6 +7,8 @@ public class CreateMemberRequest {
 	private String mobileNumber;
 	private String password;
 	private SchoolMemberRole role;
+	
+	
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
