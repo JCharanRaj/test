@@ -1,5 +1,7 @@
 package com.school.canvasing.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,20 +29,37 @@ public class Student extends BaseEntity {
 	private Gender gender;
 
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "parent_id", nullable = false)
+	@ManyToOne
+    @JoinColumn(name = "parent_details_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private Parent parent;
+    private ParentDetails parentDetails;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private SchoolMember teacher;
-	
-	
-	
+    private SchoolMember teacher;	
+
+
+	@Column(name = "relationship")
+	private String relationship;
+
+	@Column(name = "date_of_birth")
+	private LocalDate dateOfBirth;
+
+	@Column(name = "previous_school")
+	private String previousSchool;
+
+	@Column(name = "previous_class")
+	private int previousClass;
+
+	@Column(name = "admission_class")
+	private int admissionClass;
+
+	@Column(name = "parent_or_guardian_remark")
+	private String parentOrGuardianRemark;
+
 	public String getName() {
 		return name;
 	}
@@ -64,13 +83,14 @@ public class Student extends BaseEntity {
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
+	
 
-	public Parent getParent() {
-		return parent;
+	public ParentDetails getParentDetails() {
+		return parentDetails;
 	}
 
-	public void setParent(Parent parent) {
-		this.parent = parent;
+	public void setParentDetails(ParentDetails parentDetails) {
+		this.parentDetails = parentDetails;
 	}
 
 	public SchoolMember getTeacher() {
@@ -80,6 +100,58 @@ public class Student extends BaseEntity {
 	public void setTeacher(SchoolMember teacher) {
 		this.teacher = teacher;
 	}
+
+	public String getRelationship() {
+		return relationship;
+	}
+
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
+	}
+
+	
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getPreviousSchool() {
+		return previousSchool;
+	}
+
+	public void setPreviousSchool(String previousSchool) {
+		this.previousSchool = previousSchool;
+	}
+
+	public int getPreviousClass() {
+		return previousClass;
+	}
+
+	public void setPreviousClass(int previousClass) {
+		this.previousClass = previousClass;
+	}
+
+	public int getAdmissionClass() {
+		return admissionClass;
+	}
+
+	public void setAdmissionClass(int admissionClass) {
+		this.admissionClass = admissionClass;
+	}
+
+	public String getParentOrGuardianRemark() {
+		return parentOrGuardianRemark;
+	}
+
+	public void setParentOrGuardianRemark(String parentOrGuardianRemark) {
+		this.parentOrGuardianRemark = parentOrGuardianRemark;
+	}
+	
+	
+	
 	
 	
 }

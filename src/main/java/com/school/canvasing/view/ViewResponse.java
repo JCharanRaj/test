@@ -6,7 +6,6 @@ public class ViewResponse {
 	private String status;
 	private String message;
 	private Object data;
-	private String role;
 
 	public long getId() {
 		return id;
@@ -40,12 +39,6 @@ public class ViewResponse {
 		this.data = data;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
+	
 
 }

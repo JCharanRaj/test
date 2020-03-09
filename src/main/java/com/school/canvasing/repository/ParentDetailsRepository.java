@@ -4,12 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.school.canvasing.entity.ParentDetails;
-import com.school.canvasing.entity.Student;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student,Long> {
+public interface ParentDetailsRepository extends JpaRepository<ParentDetails,Long> {
 
-	Student findByParentDetailsAndName(ParentDetails parentDetails, String name);
+	ParentDetails findByFatherMobileAndMotherMobile(String fatherMobile, String motherMobile);
 
 
 }

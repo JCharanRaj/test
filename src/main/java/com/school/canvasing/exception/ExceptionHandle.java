@@ -24,7 +24,7 @@ public class ExceptionHandle extends ResponseEntityExceptionHandler {
 			LoginException exception, WebRequest request) {
 		LOGGER.info("Exceptin cause: "+exception.getMessage());
 		ErrorResponse errorResponse = new ErrorResponse(Constants.FAILED, exception.getLocalizedMessage(), request.getDescription(false));
-		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(UserNotException.class)
@@ -32,7 +32,15 @@ public class ExceptionHandle extends ResponseEntityExceptionHandler {
 			UserNotException exception, WebRequest request) {
 		LOGGER.info("Exceptin cause: "+exception.getMessage());
 		ErrorResponse errorResponse = new ErrorResponse(Constants.FAILED,exception.getLocalizedMessage(), request.getDescription(false));
-		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
-
+	
+	@ExceptionHandler(StudentException.class)
+	public final ResponseEntity<ErrorResponse> handleStudentException(
+			StudentException exception, WebRequest request) {
+		LOGGER.info("Exceptin cause: "+exception.getMessage());
+		ErrorResponse errorResponse = new ErrorResponse(Constants.FAILED,exception.getLocalizedMessage(), request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.ACCEPTED);
+	}
+	
 }

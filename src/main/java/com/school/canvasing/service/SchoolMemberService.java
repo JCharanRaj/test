@@ -26,6 +26,7 @@ import com.school.canvasing.request.LoginRequest;
 import com.school.canvasing.request.UpdateTeacherLocation;
 import com.school.canvasing.view.ViewResponse;
 import com.school.canvasing.view.ViewTeacher;
+import com.school.canvasing.view.ViewUser;
 
 @Service
 public class SchoolMemberService {
@@ -49,12 +50,15 @@ public class SchoolMemberService {
 		if (!loginRequest.getPassword().equals(schoolMember.getPassword())) {
 			throw new LoginException(Constants.INCORRECT_PASSWORD);
 		}
-
+		ViewUser viewUser= new ViewUser();
+		viewUser.setRole(schoolMember.getRole());
+		viewUser.setId(schoolMember.getId());
+		viewUser.setUserName(schoolMember.getName());
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setId(schoolMember.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.USER_LOGIN.replace("<role>", schoolMember.getRole()));
-		viewResponse.setRole(schoolMember.getRole());
+		
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 
@@ -72,11 +76,12 @@ public class SchoolMemberService {
 		member.setRole(createMemberRequest.getRole().toString());
 		member.setName(createMemberRequest.getName());
 		schoolMemberRepository.save(member);
+		
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setId(member.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.USER_CREATED.replace("<role>", member.getRole()));
-		viewResponse.setRole(member.getRole());
+		
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 
@@ -113,7 +118,6 @@ public class SchoolMemberService {
 		if (!schoolMember.isPresent()) {
 			throw new UserNotException(Constants.USER_NOT_FOUND + updateTeacherLocation.getId());
 		}
-
 		if (!schoolMember.get().getRole().equalsIgnoreCase(SchoolMemberRole.TEACHER.toString())) {
 			throw new LoginException(Constants.USER_NOT_TEACHER);
 		}
@@ -126,7 +130,6 @@ public class SchoolMemberService {
 		viewResponse.setId(member.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.UPDATE_TEACHER_LOCATION);
-		viewResponse.setRole(member.getRole());
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 
