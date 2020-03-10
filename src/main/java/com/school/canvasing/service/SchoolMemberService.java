@@ -50,6 +50,9 @@ public class SchoolMemberService {
 		if (!loginRequest.getPassword().equals(schoolMember.getPassword())) {
 			throw new LoginException(Constants.INCORRECT_PASSWORD);
 		}
+		schoolMember.setLoginStatus(Constants.ACTIVE);
+		schoolMember.setUpdatedTime(DateAndTimeUtil.now());
+		schoolMemberRepository.save(schoolMember);
 		ViewUser viewUser= new ViewUser();
 		viewUser.setRole(schoolMember.getRole());
 		viewUser.setId(schoolMember.getId());
@@ -133,4 +136,24 @@ public class SchoolMemberService {
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 
+	public ResponseEntity<ViewResponse> logoutSchoolMember(long id) {
+		Optional<SchoolMember> schoolMemberOptional = schoolMemberRepository.findById(id);
+		
+		if (!schoolMemberOptional.isPresent()) {
+			throw new UserNotException(Constants.USER_NOT_FOUND_WITH_ID + id);
+		}
+		SchoolMember schoolMember= schoolMemberOptional.get();		
+		schoolMember.setLoginStatus(Constants.INACTIVE);
+		schoolMember.setUpdatedTime(DateAndTimeUtil.now());
+		schoolMemberRepository.save(schoolMember);
+		ViewUser viewUser= new ViewUser();
+		viewUser.setRole(schoolMember.getRole());
+		viewUser.setId(schoolMember.getId());
+		viewUser.setUserName(schoolMember.getName());
+		ViewResponse viewResponse = new ViewResponse();
+		viewResponse.setId(schoolMember.getId());
+		viewResponse.setStatus(Constants.SUCCESS);
+		viewResponse.setMessage(Constants.USER_LOGOUT.replace("<role>", schoolMember.getRole()));		
+		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	}
 }

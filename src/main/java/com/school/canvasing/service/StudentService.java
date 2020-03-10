@@ -36,26 +36,32 @@ public class StudentService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StudentService.class);
 
 	public ResponseEntity<ViewResponse> createStudent(CreateStudentRequest studentRequest) {
-		
-		SchoolMember teacher = schoolMemberRepository.findByIdAndRole(studentRequest.getTeacherId(),SchoolMemberRole.TEACHER.toString());
-		
-		if (teacher ==null) {
+
+		SchoolMember teacher = schoolMemberRepository.findByIdAndRole(studentRequest.getTeacherId(),
+				SchoolMemberRole.TEACHER.toString());
+
+		if (teacher == null) {
 			throw new LoginException(Constants.USER_NOT_TEACHER_TO_ADD_STUDENT);
 		}
-		
-		ParentDetails parentDetails= parentDetailsRepository.findByFatherMobileAndMotherMobile(studentRequest.getFatherMobile(), studentRequest.getMotherMobile());
+
+		ParentDetails parentDetails = parentDetailsRepository
+				.findByFatherMobileAndMotherMobile(studentRequest.getFatherMobile(), studentRequest.getMotherMobile());
 		Student student = new Student();
-		if(parentDetails !=null) {
+		if (parentDetails != null) {
 			student = studentRepository.findByParentDetailsAndName(parentDetails, studentRequest.getName());
-			if(student!=null) {
+			if (student != null) {
 				throw new StudentException(Constants.STUDENT_EXISTS);
-			}
-			else {
-			 student= saveStudent(parentDetails, studentRequest, teacher);
+			} else {
+				student = saveStudent(parentDetails, studentRequest, teacher);
+				ViewResponse viewResponse = new ViewResponse();
+				viewResponse.setId(student.getId());
+				viewResponse.setStatus(Constants.SUCCESS);
+				viewResponse.setMessage(Constants.STUDENT_CREATED);
+				return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 			}
 		}
 		ParentDetails newParentDetails = saveParentDetails(studentRequest);
-		student= saveStudent(newParentDetails, studentRequest, teacher);		
+		student = saveStudent(newParentDetails, studentRequest, teacher);
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setId(student.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
@@ -90,12 +96,12 @@ public class StudentService {
 		student.setDateOfBirth(studentRequest.getDateOfBirth());
 		student.setGender(studentRequest.getGender());
 		student.setName(studentRequest.getName());
+		student.setTeacher(teacher);
 		student.setParentDetails(parentDetails);
 		student.setParentOrGuardianRemark(studentRequest.getParentOrGuardianRemark());
 		student.setPreviousClass(studentRequest.getPreviousClass());
 		student.setPreviousSchool(studentRequest.getPreviousSchool());
 		student.setRelationship(studentRequest.getRelationship());
-		student.setTeacher(teacher);
 		return studentRepository.save(student);
 	}
 

@@ -30,6 +30,9 @@ public class SchoolMember extends BaseEntity{
 	@Column(name="status")
 	private String status;
 	
+	@Column(name="login_status")
+	private String loginStatus;
+	
 
 	public String getMobileNumber() {
 		return mobileNumber;
@@ -85,6 +88,14 @@ public class SchoolMember extends BaseEntity{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getLoginStatus() {
+		return loginStatus;
+	}
+
+	public void setLoginStatus(String loginStatus) {
+		this.loginStatus = loginStatus;
 	}
 	
 	

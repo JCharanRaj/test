@@ -31,14 +31,10 @@ public class Student extends BaseEntity {
 	
 	@ManyToOne
     @JoinColumn(name = "parent_details_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private ParentDetails parentDetails;
 	
 	@ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private SchoolMember teacher;	
 
 
