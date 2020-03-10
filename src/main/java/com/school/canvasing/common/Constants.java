@@ -8,6 +8,8 @@ public class Constants {
 	
 	public static final String SUCCESS = "Success";
 	public static final String FAILED = "Failed";
+	public static final String ACTIVE = "ACTIVE";
+	public static final String INACTIVE = "INACTIVE";
 
 	public static final String USER_LOGIN = "<role> login successfully";
 	public static final String USER_CREATED = "New <role> created successfully..!";
@@ -22,4 +24,5 @@ public class Constants {
 	public static final String UPDATE_TEACHER_LOCATION = "Teacher location updated successfully..!";
 	public static final String STUDENT_CREATED = "New Student added successfully..!";
 	public static final String STUDENT_EXISTS = "Student already exists with this parent";
+	public static final String USER_LOGOUT = "<role> logout successfully";
 }
