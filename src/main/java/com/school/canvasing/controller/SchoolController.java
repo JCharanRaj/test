@@ -87,8 +87,17 @@ public class SchoolController {
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters"),
 			@ApiResponse(code = HttpServletResponse.SC_UNAUTHORIZED, response = ErrorResponse.class, message = "Invalid Token / Without Token"),
 			@ApiResponse(code = HttpServletResponse.SC_FORBIDDEN, response = ErrorResponse.class, message = "UnAuthorized Access") })
-	@PostMapping(value = "/updateTeacherLocation", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value = "/updateTeac@GetMapping(value = \"/getTeachers/{id}\", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)\n" + 
+			"	public ResponseEntity<ViewResponse> getTeachers(@PathVariable long id) {\n" + 
+			"		return schoolMemberService.getTeachers(id);\n" + 
+			"	}\n" + 
+			"	herLocation", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ViewResponse> updateTeacherLocation(@RequestBody UpdateTeacherLocation updateTeacherLocation) {
 		return schoolMemberService.updateTeacherLocation(updateTeacherLocation);
 	}
+	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public String getMessage() {
+		return "Welcome to app";
+	}
+	
 }
