@@ -61,7 +61,7 @@ public class SchoolMemberService {
 		viewResponse.setId(schoolMember.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.USER_LOGIN.replace("<role>", schoolMember.getRole()));
-		
+		viewResponse.setData(viewUser);
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 
