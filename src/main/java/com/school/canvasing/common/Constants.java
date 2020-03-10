@@ -22,7 +22,12 @@ public class Constants {
 	public static final String USER_NOT_TEACHER = "User not a Teacher to update location";
 	public static final String USER_NOT_TEACHER_TO_ADD_STUDENT = "User not a Teacher to add student";
 	public static final String UPDATE_TEACHER_LOCATION = "Teacher location updated successfully..!";
-	public static final String STUDENT_CREATED = "New Student added successfully..!";
+	public static final String STUDENT_CREATED = "All students are added successfully..!";
 	public static final String STUDENT_EXISTS = "Student already exists with this parent";
 	public static final String USER_LOGOUT = "<role> logout successfully";
+	
+	public static final int AADHAR_LENGTH = 12;
+	
+	public static final String AADHAR ="Aadhar number must be 12 charecters";
+	
 }

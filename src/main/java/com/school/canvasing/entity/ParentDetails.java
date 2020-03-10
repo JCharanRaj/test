@@ -30,11 +30,11 @@ public class ParentDetails extends BaseEntity {
 	@Column(name = "door_no")
 	private String doorNo;
 	
-	@Column(name = "father_adhar")
-	private long fatherAadhar;
+	@Column(name = "father_aadhar")
+	private String fatherAadhar;
 	
 	@Column(name = "mother_aadhar")
-	private long motherAadhar;
+	private String motherAadhar;
 	
 	@Column(name = "land_mark")
 	private String landMark;
@@ -95,21 +95,19 @@ public class ParentDetails extends BaseEntity {
 		this.doorNo = doorNo;
 	}
 
-	
-
-	public long getFatherAadhar() {
+	public String getFatherAadhar() {
 		return fatherAadhar;
 	}
 
-	public void setFatherAadhar(long fatherAadhar) {
+	public void setFatherAadhar(String fatherAadhar) {
 		this.fatherAadhar = fatherAadhar;
 	}
 
-	public long getMotherAadhar() {
+	public String getMotherAadhar() {
 		return motherAadhar;
 	}
 
-	public void setMotherAadhar(long motherAadhar) {
+	public void setMotherAadhar(String motherAadhar) {
 		this.motherAadhar = motherAadhar;
 	}
 
@@ -121,6 +119,7 @@ public class ParentDetails extends BaseEntity {
 		this.landMark = landMark;
 	}
 
+	
 	
 	
 }

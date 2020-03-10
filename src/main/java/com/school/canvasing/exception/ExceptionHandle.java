@@ -43,4 +43,13 @@ public class ExceptionHandle extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.ACCEPTED);
 	}
 	
+	@ExceptionHandler(InValidInputException.class)
+	public final ResponseEntity<ErrorResponse> handleInValidInputException(
+			InValidInputException exception, WebRequest request) {
+		LOGGER.info("Exceptin cause: "+exception.getMessage());
+		ErrorResponse errorResponse = new ErrorResponse(Constants.FAILED,exception.getLocalizedMessage(), request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+	
+	
 }

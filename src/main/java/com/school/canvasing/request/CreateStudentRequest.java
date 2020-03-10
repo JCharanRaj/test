@@ -1,13 +1,9 @@
 package com.school.canvasing.request;
 
-import java.time.LocalDate;
-
-import com.school.canvasing.common.Gender;
+import java.util.List;
 
 public class CreateStudentRequest {
 
-	private String name;
-	private Gender gender;
 	private String fatherName;
 	private String motherName;
 	private String fatherMobile;
@@ -15,30 +11,11 @@ public class CreateStudentRequest {
 	private String address;
 	private int noOfChildren;
 	private String doorNo;
-	private long fatherAdhar;
-	private long motherAdhar;
-	private String landMark;
-	private String relationship;
-	private LocalDate dateOfBirth;
-	private String previousSchool;
-	private int previousClass;
-	private int admissionClass;
-	private String parentOrGuardianRemark;
-	private long teacherId;
-	private int age;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Gender getGender() {
-		return gender;
-	}
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
+	private String fatherAadhar;
+	private String motherAadhar;
+	private String landMark;	
+	private long teacherId;	
+	private List<StudentRequest>  studentRequests;
 	public String getFatherName() {
 		return fatherName;
 	}
@@ -81,18 +58,17 @@ public class CreateStudentRequest {
 	public void setDoorNo(String doorNo) {
 		this.doorNo = doorNo;
 	}
-	
-	public long getFatherAdhar() {
-		return fatherAdhar;
+	public String getFatherAadhar() {
+		return fatherAadhar;
 	}
-	public void setFatherAdhar(long fatherAdhar) {
-		this.fatherAdhar = fatherAdhar;
+	public void setFatherAadhar(String fatherAadhar) {
+		this.fatherAadhar = fatherAadhar;
 	}
-	public long getMotherAdhar() {
-		return motherAdhar;
+	public String getMotherAadhar() {
+		return motherAadhar;
 	}
-	public void setMotherAdhar(long motherAdhar) {
-		this.motherAdhar = motherAdhar;
+	public void setMotherAadhar(String motherAadhar) {
+		this.motherAadhar = motherAadhar;
 	}
 	public String getLandMark() {
 		return landMark;
@@ -100,55 +76,20 @@ public class CreateStudentRequest {
 	public void setLandMark(String landMark) {
 		this.landMark = landMark;
 	}
-	public String getRelationship() {
-		return relationship;
-	}
-	public void setRelationship(String relationship) {
-		this.relationship = relationship;
-	}
-	
-	public LocalDate getDateOfBirth() {
-		return dateOfBirth;
-	}
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-	public String getPreviousSchool() {
-		return previousSchool;
-	}
-	public void setPreviousSchool(String previousSchool) {
-		this.previousSchool = previousSchool;
-	}
-	public int getPreviousClass() {
-		return previousClass;
-	}
-	public void setPreviousClass(int previousClass) {
-		this.previousClass = previousClass;
-	}
-	public int getAdmissionClass() {
-		return admissionClass;
-	}
-	public void setAdmissionClass(int admissionClass) {
-		this.admissionClass = admissionClass;
-	}
-	public String getParentOrGuardianRemark() {
-		return parentOrGuardianRemark;
-	}
-	public void setParentOrGuardianRemark(String parentOrGuardianRemark) {
-		this.parentOrGuardianRemark = parentOrGuardianRemark;
-	}
 	public long getTeacherId() {
 		return teacherId;
 	}
 	public void setTeacherId(long teacherId) {
 		this.teacherId = teacherId;
 	}
-	public int getAge() {
-		return age;
+	public List<StudentRequest> getStudentRequests() {
+		return studentRequests;
 	}
-	public void setAge(int age) {
-		this.age = age;
-	} 
+	public void setStudentRequests(List<StudentRequest> studentRequests) {
+		this.studentRequests = studentRequests;
+	}
+
+
 	
 	
 }
