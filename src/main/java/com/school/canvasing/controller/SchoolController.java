@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping
 @CrossOrigin(origins = "*")
 public class SchoolController {
 	
