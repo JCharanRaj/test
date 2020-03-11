@@ -2,7 +2,6 @@ package com.school.canvasing.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -16,12 +15,13 @@ import com.school.canvasing.common.Constants;
 import com.school.canvasing.common.DateAndTimeUtil;
 import com.school.canvasing.common.SchoolMemberRole;
 import com.school.canvasing.entity.SchoolMember;
+import com.school.canvasing.entity.TeacherLocation;
 import com.school.canvasing.exception.ExceptionHandle;
 import com.school.canvasing.exception.LoginException;
 import com.school.canvasing.exception.UserNotException;
 import com.school.canvasing.repository.SchoolMemberRepository;
+import com.school.canvasing.repository.TeacherLocationRepository;
 import com.school.canvasing.request.CreateMemberRequest;
-import com.school.canvasing.request.CreateStudentRequest;
 import com.school.canvasing.request.LoginRequest;
 import com.school.canvasing.request.UpdateTeacherLocation;
 import com.school.canvasing.view.ViewResponse;
@@ -30,13 +30,14 @@ import com.school.canvasing.view.ViewUser;
 
 @Service
 public class SchoolMemberService {
-	
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandle.class);
-	
 
 	@Autowired
 	SchoolMemberRepository schoolMemberRepository;
+
+	@Autowired
+	TeacherLocationRepository teacherLocationRepository;
 
 	public ResponseEntity<ViewResponse> loginSchoolMember(LoginRequest loginRequest) {
 		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(loginRequest.getMobileNumber());
@@ -53,7 +54,7 @@ public class SchoolMemberService {
 		schoolMember.setLoginStatus(Constants.ACTIVE);
 		schoolMember.setUpdatedTime(DateAndTimeUtil.now());
 		schoolMemberRepository.save(schoolMember);
-		ViewUser viewUser= new ViewUser();
+		ViewUser viewUser = new ViewUser();
 		viewUser.setRole(schoolMember.getRole());
 		viewUser.setId(schoolMember.getId());
 		viewUser.setUserName(schoolMember.getName());
@@ -79,12 +80,12 @@ public class SchoolMemberService {
 		member.setRole(createMemberRequest.getRole().toString());
 		member.setName(createMemberRequest.getName());
 		schoolMemberRepository.save(member);
-		
+
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setId(member.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.USER_CREATED.replace("<role>", member.getRole()));
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 
@@ -99,7 +100,8 @@ public class SchoolMemberService {
 		}
 
 		List<SchoolMember> schoolMembers = schoolMemberRepository.findByRole(SchoolMemberRole.TEACHER.toString());
-		List<ViewTeacher>  teachers= schoolMembers.stream().map(member -> getTeacher(member)).collect(Collectors.toList());
+		List<ViewTeacher> teachers = schoolMembers.stream().map(member -> getTeacher(member))
+				.collect(Collectors.toList());
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.UPDATE_TEACHER_LOCATION);
@@ -110,8 +112,12 @@ public class SchoolMemberService {
 	private ViewTeacher getTeacher(SchoolMember member) {
 		ViewTeacher teacher = new ViewTeacher();
 		teacher.setId(member.getId());
-		teacher.setLatitude(member.getLatitude());
-		teacher.setLongitude(member.getLongitude());
+		TeacherLocation teacherLocation = teacherLocationRepository.findByTeacherAndDate(member,
+				DateAndTimeUtil.now().toLocalDate());
+		if (teacherLocation != null) {
+			teacher.setLatitude(teacherLocation.getCurrentLatitude());
+			teacher.setLongitude(teacherLocation.getCurrentLongitude());
+		}
 		teacher.setName(member.getName());
 		return teacher;
 	}
@@ -125,10 +131,25 @@ public class SchoolMemberService {
 			throw new LoginException(Constants.USER_NOT_TEACHER);
 		}
 		SchoolMember member = schoolMember.get();
-		member.setLatitude(updateTeacherLocation.getLatitude());
-		member.setLongitude(updateTeacherLocation.getLongitude());
-		member.setUpdatedTime(DateAndTimeUtil.now());
-		schoolMemberRepository.save(member);
+		TeacherLocation teacherLocation = teacherLocationRepository.findByTeacherAndDate(member,
+				DateAndTimeUtil.now().toLocalDate());
+		if (teacherLocation == null) {
+			TeacherLocation newTeacherLocation = new TeacherLocation();
+			newTeacherLocation.setInitialLatitude(updateTeacherLocation.getLatitude());
+			newTeacherLocation.setInitialLongitude(updateTeacherLocation.getLongitude());
+			newTeacherLocation.setCurrentLatitude(updateTeacherLocation.getLatitude());
+			newTeacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
+			newTeacherLocation.setCreatedTime(DateAndTimeUtil.now());
+			newTeacherLocation.setUpdatedTime(DateAndTimeUtil.now());
+			newTeacherLocation.setDate(DateAndTimeUtil.now().toLocalDate());
+			newTeacherLocation.setTeacher(member);
+			teacherLocationRepository.save(newTeacherLocation);
+		} else {
+			teacherLocation.setCurrentLatitude(updateTeacherLocation.getLatitude());
+			teacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
+			teacherLocation.setUpdatedTime(DateAndTimeUtil.now());
+			teacherLocationRepository.save(teacherLocation);
+		}
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setId(member.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
@@ -138,22 +159,22 @@ public class SchoolMemberService {
 
 	public ResponseEntity<ViewResponse> logoutSchoolMember(long id) {
 		Optional<SchoolMember> schoolMemberOptional = schoolMemberRepository.findById(id);
-		
+
 		if (!schoolMemberOptional.isPresent()) {
 			throw new UserNotException(Constants.USER_NOT_FOUND_WITH_ID + id);
 		}
-		SchoolMember schoolMember= schoolMemberOptional.get();		
+		SchoolMember schoolMember = schoolMemberOptional.get();
 		schoolMember.setLoginStatus(Constants.INACTIVE);
 		schoolMember.setUpdatedTime(DateAndTimeUtil.now());
 		schoolMemberRepository.save(schoolMember);
-		ViewUser viewUser= new ViewUser();
+		ViewUser viewUser = new ViewUser();
 		viewUser.setRole(schoolMember.getRole());
 		viewUser.setId(schoolMember.getId());
 		viewUser.setUserName(schoolMember.getName());
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setId(schoolMember.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
-		viewResponse.setMessage(Constants.USER_LOGOUT.replace("<role>", schoolMember.getRole()));		
+		viewResponse.setMessage(Constants.USER_LOGOUT.replace("<role>", schoolMember.getRole()));
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 }

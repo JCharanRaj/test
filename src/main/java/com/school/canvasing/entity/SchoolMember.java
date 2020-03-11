@@ -21,57 +21,35 @@ public class SchoolMember extends BaseEntity{
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="longitude")
-	private String longitude;
-	
-	@Column(name="latitude")
-	private String latitude;
 	
 	@Column(name="status")
 	private String status;
 	
 	@Column(name="login_status")
 	private String loginStatus;
-	
 
 	public String getMobileNumber() {
 		return mobileNumber;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public String getLongitude() {
-		return longitude;
-	}
-
-	public String getLatitude() {
-		return latitude;
 	}
 
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
 	}
 
 	public String getName() {
@@ -98,5 +76,6 @@ public class SchoolMember extends BaseEntity{
 		this.loginStatus = loginStatus;
 	}
 	
+
 	
 }
