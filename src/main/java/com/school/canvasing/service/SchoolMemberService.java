@@ -117,6 +117,7 @@ public class SchoolMemberService {
 		if (teacherLocation != null) {
 			teacher.setLatitude(teacherLocation.getCurrentLatitude());
 			teacher.setLongitude(teacherLocation.getCurrentLongitude());
+			teacher.setDistance(teacherLocation.getDistance());
 		}
 		teacher.setName(member.getName());
 		return teacher;
@@ -145,9 +146,12 @@ public class SchoolMemberService {
 			newTeacherLocation.setTeacher(member);
 			teacherLocationRepository.save(newTeacherLocation);
 		} else {
+			double distance = distance(teacherLocation.getCurrentLatitude(), teacherLocation.getCurrentLongitude(),
+					updateTeacherLocation.getLatitude(), updateTeacherLocation.getLongitude());
 			teacherLocation.setCurrentLatitude(updateTeacherLocation.getLatitude());
 			teacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
 			teacherLocation.setUpdatedTime(DateAndTimeUtil.now());
+			teacherLocation.setDistance(teacherLocation.getDistance()+distance);
 			teacherLocationRepository.save(teacherLocation);
 		}
 		ViewResponse viewResponse = new ViewResponse();
@@ -176,5 +180,20 @@ public class SchoolMemberService {
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.USER_LOGOUT.replace("<role>", schoolMember.getRole()));
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	}
+
+	private static double distance(double latitude1, double longitude1, double latitude2, double longitude2) {
+		if ((latitude1 == latitude2) && (longitude1 == longitude2)) {
+			return 0;
+		} else {
+			double theta = longitude1 - longitude2;
+			double dist = Math.sin(Math.toRadians(latitude1)) * Math.sin(Math.toRadians(latitude2))
+					+ Math.cos(Math.toRadians(latitude1)) * Math.cos(Math.toRadians(latitude2))
+							* Math.cos(Math.toRadians(theta));
+			dist = Math.acos(dist);
+			dist = Math.toDegrees(dist);
+			dist = dist * 60 * 1.1515;
+			return (dist * 1.609344);
+		}
 	}
 }
