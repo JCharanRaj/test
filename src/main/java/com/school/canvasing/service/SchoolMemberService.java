@@ -1,5 +1,7 @@
 package com.school.canvasing.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -117,7 +119,7 @@ public class SchoolMemberService {
 		if (teacherLocation != null) {
 			teacher.setLatitude(teacherLocation.getCurrentLatitude());
 			teacher.setLongitude(teacherLocation.getCurrentLongitude());
-			teacher.setDistance(teacherLocation.getDistance());
+			teacher.setDistance(getPriceInDecimal(teacherLocation.getDistance()));
 		}
 		teacher.setName(member.getName());
 		return teacher;
@@ -151,7 +153,7 @@ public class SchoolMemberService {
 			teacherLocation.setCurrentLatitude(updateTeacherLocation.getLatitude());
 			teacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
 			teacherLocation.setUpdatedTime(DateAndTimeUtil.now());
-			teacherLocation.setDistance(teacherLocation.getDistance()+distance);
+			teacherLocation.setDistance(getPriceInDecimal(teacherLocation.getDistance()+distance));
 			teacherLocationRepository.save(teacherLocation);
 		}
 		ViewResponse viewResponse = new ViewResponse();
@@ -195,5 +197,9 @@ public class SchoolMemberService {
 			dist = dist * 60 * 1.1515;
 			return (dist * 1.609344);
 		}
+	}
+	
+	public double getPriceInDecimal(double value) {
+		return BigDecimal.valueOf(value).setScale(2, RoundingMode.FLOOR).doubleValue();
 	}
 }
