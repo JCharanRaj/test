@@ -226,7 +226,7 @@ public class SchoolMemberService {
 			throw new LoginException(Constants.USER_NOT_TEACHER);
 		}
 		Long totalStudents = studentRepository.getTodalStudentsByTeacher(schoolMember.get());
-		Long totalDistance = teacherLocationRepository.findByTeacherDistnaceSum(schoolMember.get());
+		Long totalDistance = teacherLocationRepository.getTodalDistanceByTeacher(schoolMember.get());
 		
 		ViewTeacherInfo teacherInfo= new ViewTeacherInfo();
 		teacherInfo.setId(schoolMember.get().getId());

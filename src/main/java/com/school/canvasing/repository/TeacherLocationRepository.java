@@ -15,6 +15,5 @@ public interface TeacherLocationRepository extends JpaRepository<TeacherLocation
 	@Query(value = "select coalesce(sum(distance),0) from teacher_location where teacher_id=?1", nativeQuery = true)
 	Long getTodalDistanceByTeacher(SchoolMember schoolMember);
 
-	Long findByTeacherDistnaceSum(SchoolMember schoolMember);
 
 }
