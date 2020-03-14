@@ -132,7 +132,7 @@ public class SchoolMemberService {
 	public ResponseEntity<ViewResponse> updateTeacherLocation(UpdateTeacherLocation updateTeacherLocation) {
 		Optional<SchoolMember> schoolMember = schoolMemberRepository.findById(updateTeacherLocation.getId());
 		if (!schoolMember.isPresent()) {
-			throw new UserNotException(Constants.USER_NOT_FOUND + updateTeacherLocation.getId());
+			throw new UserNotException(Constants.USER_NOT_FOUND_WITH_ID + updateTeacherLocation.getId());
 		}
 		if (!schoolMember.get().getRole().equalsIgnoreCase(SchoolMemberRole.TEACHER.toString())) {
 			throw new LoginException(Constants.USER_NOT_TEACHER);
@@ -226,9 +226,12 @@ public class SchoolMemberService {
 			throw new LoginException(Constants.USER_NOT_TEACHER);
 		}
 		Long totalStudents = studentRepository.getTodalStudentsByTeacher(schoolMember.get());
+		Long totalDistance = teacherLocationRepository.findByTeacherDistnaceSum(schoolMember.get());
+		
 		ViewTeacherInfo teacherInfo= new ViewTeacherInfo();
 		teacherInfo.setId(schoolMember.get().getId());
 		teacherInfo.setTotalStudents(totalStudents);
+		teacherInfo.setTotalDistance(totalDistance);
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setData(teacherInfo);
