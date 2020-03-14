@@ -5,8 +5,9 @@
 	<groupId>canvasing</groupId>
 	<artifactId>school-canvasing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>school</name>
-	<description>HomeJiny Orders API spring boot server</description>
+	<description>School Canvasing API spring boot server</description>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
