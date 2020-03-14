@@ -12,17 +12,17 @@ import javax.persistence.Table;
 @Table(name = "TEACHER_LOCATION")
 public class TeacherLocation extends BaseEntity {
 
-	@Column(name="initial_longitude", columnDefinition="Decimal(10,2) default '0.00'")
-	private double initialLongitude;
+	@Column(name="initial_longitude")
+	private String initialLongitude;
 
-	@Column(name="initial_latitude", columnDefinition="Decimal(10,2) default '0.00'")
-	private double initialLatitude;
+	@Column(name="initial_latitude")
+	private String initialLatitude;
 
-	@Column(name="current_longitude", columnDefinition="Decimal(10,2) default '0.00'")
-	private double currentLongitude;
+	@Column(name="current_longitude")
+	private String currentLongitude;
 
-	@Column(name="current_latitude", columnDefinition="Decimal(10,2) default '0.00'")
-	private double currentLatitude;
+	@Column(name="current_latitude")
+	private String currentLatitude;
 
 	@ManyToOne
 	@JoinColumn(name = "teacher_id", nullable = false)
@@ -34,35 +34,35 @@ public class TeacherLocation extends BaseEntity {
 	@Column(name="distance", columnDefinition="Decimal(10,2) default '0.00'")
 	private double distance;
 
-	public double getInitialLongitude() {
+	public String getInitialLongitude() {
 		return initialLongitude;
 	}
 
-	public void setInitialLongitude(double initialLongitude) {
+	public void setInitialLongitude(String initialLongitude) {
 		this.initialLongitude = initialLongitude;
 	}
 
-	public double getInitialLatitude() {
+	public String getInitialLatitude() {
 		return initialLatitude;
 	}
 
-	public void setInitialLatitude(double initialLatitude) {
+	public void setInitialLatitude(String initialLatitude) {
 		this.initialLatitude = initialLatitude;
 	}
 
-	public double getCurrentLongitude() {
+	public String getCurrentLongitude() {
 		return currentLongitude;
 	}
 
-	public void setCurrentLongitude(double currentLongitude) {
+	public void setCurrentLongitude(String currentLongitude) {
 		this.currentLongitude = currentLongitude;
 	}
 
-	public double getCurrentLatitude() {
+	public String getCurrentLatitude() {
 		return currentLatitude;
 	}
 
-	public void setCurrentLatitude(double currentLatitude) {
+	public void setCurrentLatitude(String currentLatitude) {
 		this.currentLatitude = currentLatitude;
 	}
 

@@ -4,8 +4,8 @@ public class ViewTeacher {
 
 	private long id;
 	private String name;
-	private double longitude;
-	private double latitude;
+	private String longitude;
+	private String latitude;
 	private double distance;
 
 	public long getId() {
@@ -24,19 +24,19 @@ public class ViewTeacher {
 		this.name = name;
 	}
 
-	public double getLongitude() {
+	public String getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(double longitude) {
+	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
 
-	public double getLatitude() {
+	public String getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(double latitude) {
+	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
 
@@ -47,5 +47,4 @@ public class ViewTeacher {
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
-
 }

@@ -76,9 +76,9 @@ public class SchoolController {
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters"),
 			@ApiResponse(code = HttpServletResponse.SC_UNAUTHORIZED, response = ErrorResponse.class, message = "Invalid Token / Without Token"),
 			@ApiResponse(code = HttpServletResponse.SC_FORBIDDEN, response = ErrorResponse.class, message = "UnAuthorized Access") })
-	@GetMapping(value = "/getTeachers/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<ViewResponse> getTeachers(@PathVariable long id) {
-		return schoolMemberService.getTeachers(id);
+	@GetMapping(value = "/getTeachers/{principalId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> getTeachers(@PathVariable long principalId) {
+		return schoolMemberService.getTeachers(principalId);
 	}
 	
 	
@@ -92,5 +92,14 @@ public class SchoolController {
 		return schoolMemberService.updateTeacherLocation(updateTeacherLocation);
 	}
 	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters"),
+			@ApiResponse(code = HttpServletResponse.SC_UNAUTHORIZED, response = ErrorResponse.class, message = "Invalid Token / Without Token"),
+			@ApiResponse(code = HttpServletResponse.SC_FORBIDDEN, response = ErrorResponse.class, message = "UnAuthorized Access") })
+	@GetMapping(value = "/getTeacherInfo/{teacherId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> getTeacherInfo(@PathVariable long teacherId) {
+		return schoolMemberService.getTeacherInfo(teacherId);
+	}
 
 }

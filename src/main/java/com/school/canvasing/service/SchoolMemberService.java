@@ -22,12 +22,14 @@ import com.school.canvasing.exception.ExceptionHandle;
 import com.school.canvasing.exception.LoginException;
 import com.school.canvasing.exception.UserNotException;
 import com.school.canvasing.repository.SchoolMemberRepository;
+import com.school.canvasing.repository.StudentRepository;
 import com.school.canvasing.repository.TeacherLocationRepository;
 import com.school.canvasing.request.CreateMemberRequest;
 import com.school.canvasing.request.LoginRequest;
 import com.school.canvasing.request.UpdateTeacherLocation;
 import com.school.canvasing.view.ViewResponse;
 import com.school.canvasing.view.ViewTeacher;
+import com.school.canvasing.view.ViewTeacherInfo;
 import com.school.canvasing.view.ViewUser;
 
 @Service
@@ -40,6 +42,9 @@ public class SchoolMemberService {
 
 	@Autowired
 	TeacherLocationRepository teacherLocationRepository;
+	
+	@Autowired
+	StudentRepository studentRepository;
 
 	public ResponseEntity<ViewResponse> loginSchoolMember(LoginRequest loginRequest) {
 		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(loginRequest.getMobileNumber());
@@ -106,7 +111,6 @@ public class SchoolMemberService {
 				.collect(Collectors.toList());
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setStatus(Constants.SUCCESS);
-		viewResponse.setMessage(Constants.UPDATE_TEACHER_LOCATION);
 		viewResponse.setData(teachers);
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
@@ -184,7 +188,11 @@ public class SchoolMemberService {
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 
-	private static double distance(double latitude1, double longitude1, double latitude2, double longitude2) {
+	private double distance(String lat1, String long1, String lat2, String long2) {
+		double latitude1 = getDouble(lat1);
+		double latitude2 =getDouble(lat2);
+		double longitude1 =getDouble(long1);
+		double longitude2 =getDouble(long2);
 		if ((latitude1 == latitude2) && (longitude1 == longitude2)) {
 			return 0;
 		} else {
@@ -199,7 +207,31 @@ public class SchoolMemberService {
 		}
 	}
 	
+	
+	private double getDouble(String val) {
+		return Double.valueOf(val);
+	}
+	
 	public double getPriceInDecimal(double value) {
 		return BigDecimal.valueOf(value).setScale(2, RoundingMode.FLOOR).doubleValue();
+	}
+
+	public ResponseEntity<ViewResponse> getTeacherInfo(long teacherId) {
+		Optional<SchoolMember> schoolMember = schoolMemberRepository.findById(teacherId);
+		if (!schoolMember.isPresent()) {
+			throw new UserNotException(Constants.USER_NOT_FOUND_WITH_ID + teacherId);
+		}
+
+		if (!schoolMember.get().getRole().equalsIgnoreCase(SchoolMemberRole.TEACHER.toString())) {
+			throw new LoginException(Constants.USER_NOT_TEACHER);
+		}
+		Long totalStudents = studentRepository.getTodalStudentsByTeacher(schoolMember.get());
+		ViewTeacherInfo teacherInfo= new ViewTeacherInfo();
+		teacherInfo.setId(schoolMember.get().getId());
+		teacherInfo.setTotalStudents(totalStudents);
+		ViewResponse viewResponse = new ViewResponse();
+		viewResponse.setStatus(Constants.SUCCESS);
+		viewResponse.setData(teacherInfo);
+		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 }
