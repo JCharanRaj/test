@@ -2,6 +2,8 @@ package com.school.canvasing.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,6 +19,7 @@ import com.school.canvasing.common.Constants;
 import com.school.canvasing.common.DateAndTimeUtil;
 import com.school.canvasing.common.SchoolMemberRole;
 import com.school.canvasing.entity.SchoolMember;
+import com.school.canvasing.entity.Student;
 import com.school.canvasing.entity.TeacherLocation;
 import com.school.canvasing.exception.ExceptionHandle;
 import com.school.canvasing.exception.LoginException;
@@ -31,6 +34,7 @@ import com.school.canvasing.view.ViewResponse;
 import com.school.canvasing.view.ViewTeacher;
 import com.school.canvasing.view.ViewTeacherInfo;
 import com.school.canvasing.view.ViewUser;
+import com.school.canvasing.view.WillingnessData;
 
 @Service
 public class SchoolMemberService {
@@ -42,7 +46,7 @@ public class SchoolMemberService {
 
 	@Autowired
 	TeacherLocationRepository teacherLocationRepository;
-	
+
 	@Autowired
 	StudentRepository studentRepository;
 
@@ -157,7 +161,7 @@ public class SchoolMemberService {
 			teacherLocation.setCurrentLatitude(updateTeacherLocation.getLatitude());
 			teacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
 			teacherLocation.setUpdatedTime(DateAndTimeUtil.now());
-			teacherLocation.setDistance(getPriceInDecimal(teacherLocation.getDistance()+distance));
+			teacherLocation.setDistance(getPriceInDecimal(teacherLocation.getDistance() + distance));
 			teacherLocationRepository.save(teacherLocation);
 		}
 		ViewResponse viewResponse = new ViewResponse();
@@ -190,9 +194,9 @@ public class SchoolMemberService {
 
 	private double distance(String lat1, String long1, String lat2, String long2) {
 		double latitude1 = getDouble(lat1);
-		double latitude2 =getDouble(lat2);
-		double longitude1 =getDouble(long1);
-		double longitude2 =getDouble(long2);
+		double latitude2 = getDouble(lat2);
+		double longitude1 = getDouble(long1);
+		double longitude2 = getDouble(long2);
 		if ((latitude1 == latitude2) && (longitude1 == longitude2)) {
 			return 0;
 		} else {
@@ -206,12 +210,11 @@ public class SchoolMemberService {
 			return (dist * 1.609344);
 		}
 	}
-	
-	
+
 	private double getDouble(String val) {
 		return Double.valueOf(val);
 	}
-	
+
 	public double getPriceInDecimal(double value) {
 		return BigDecimal.valueOf(value).setScale(2, RoundingMode.FLOOR).doubleValue();
 	}
@@ -225,16 +228,50 @@ public class SchoolMemberService {
 		if (!schoolMember.get().getRole().equalsIgnoreCase(SchoolMemberRole.TEACHER.toString())) {
 			throw new LoginException(Constants.USER_NOT_TEACHER);
 		}
-		Long totalStudents = studentRepository.getTodalStudentsByTeacher(schoolMember.get());
-		Long totalDistance = teacherLocationRepository.getTodalDistanceByTeacher(schoolMember.get());
-		
-		ViewTeacherInfo teacherInfo= new ViewTeacherInfo();
+		List<Student> studentsList = studentRepository.findByTeacher(schoolMember.get());
+		List<TeacherLocation> teacherLocations = teacherLocationRepository.findByTeacher(schoolMember.get());
+
+		ViewTeacherInfo teacherInfo = new ViewTeacherInfo();
 		teacherInfo.setId(schoolMember.get().getId());
-		teacherInfo.setTotalStudents(totalStudents);
-		teacherInfo.setTotalDistance(totalDistance);
+		teacherInfo.setTotalStudents(studentsList.size());
+		teacherInfo.setTotalDistance(teacherLocations.stream().mapToDouble(a -> a.getDistance()).sum());
+		teacherInfo.setAttentedDays(teacherLocations.size());
+		teacherInfo.setWillingness(getWillingnessData(studentsList));
+		if(!teacherLocations.isEmpty()) {
+			teacherInfo.setLastTimeUsed(teacherLocations.get(teacherLocations.size()-1).getDate());
+		}
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setData(teacherInfo);
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	}
+
+	private List<WillingnessData> getWillingnessData(List<Student> studentsList) {
+		HashMap<String, List<Student>> willingnessMap = getStudentsByWillingness(studentsList);
+		List<WillingnessData> willingnessData = new ArrayList<>();
+		willingnessMap.entrySet().stream().forEach(willingness -> {
+			WillingnessData data = new WillingnessData();
+			data.setWillingnessType(willingness.getKey());
+			data.setCount(willingness.getValue().size());
+			willingnessData.add(data);
+		});
+		return willingnessData;
+
+	}
+
+	private HashMap<String, List<Student>> getStudentsByWillingness(List<Student> studentsList) {
+		HashMap<String, List<Student>> willingnessMap = new HashMap<>();
+		studentsList.stream().forEach(teacher -> {
+			List<Student> students = new ArrayList<>();
+			if (willingnessMap.containsKey(teacher.getWillingness())) {
+				students = willingnessMap.get(teacher.getWillingness());
+				students.add(teacher);
+				willingnessMap.put(teacher.getWillingness(), students);
+			} else {
+				students.add(teacher);
+				willingnessMap.put(teacher.getWillingness(), students);
+			}
+		});
+		return willingnessMap;
 	}
 }

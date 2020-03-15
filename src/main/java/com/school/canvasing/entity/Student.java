@@ -28,7 +28,6 @@ public class Student extends BaseEntity {
 	@Column(name = "gender")
 	private Gender gender;
 
-	
 	@ManyToOne
     @JoinColumn(name = "parent_details_id", nullable = false)
     private ParentDetails parentDetails;
@@ -48,14 +47,17 @@ public class Student extends BaseEntity {
 	private String previousSchool;
 
 	@Column(name = "previous_class")
-	private int previousClass;
+	private String previousClass;
 
 	@Column(name = "admission_class")
-	private int admissionClass;
+	private String admissionClass;
 
 	@Column(name = "parent_or_guardian_remark")
 	private String parentOrGuardianRemark;
 
+	@Column(name = "willingness")
+	private String willingness;
+	
 	public String getName() {
 		return name;
 	}
@@ -79,7 +81,6 @@ public class Student extends BaseEntity {
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
-	
 
 	public ParentDetails getParentDetails() {
 		return parentDetails;
@@ -105,7 +106,6 @@ public class Student extends BaseEntity {
 		this.relationship = relationship;
 	}
 
-	
 	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -122,19 +122,19 @@ public class Student extends BaseEntity {
 		this.previousSchool = previousSchool;
 	}
 
-	public int getPreviousClass() {
+	public String getPreviousClass() {
 		return previousClass;
 	}
 
-	public void setPreviousClass(int previousClass) {
+	public void setPreviousClass(String previousClass) {
 		this.previousClass = previousClass;
 	}
 
-	public int getAdmissionClass() {
+	public String getAdmissionClass() {
 		return admissionClass;
 	}
 
-	public void setAdmissionClass(int admissionClass) {
+	public void setAdmissionClass(String admissionClass) {
 		this.admissionClass = admissionClass;
 	}
 
@@ -145,9 +145,13 @@ public class Student extends BaseEntity {
 	public void setParentOrGuardianRemark(String parentOrGuardianRemark) {
 		this.parentOrGuardianRemark = parentOrGuardianRemark;
 	}
-	
-	
-	
-	
-	
+
+	public String getWillingness() {
+		return willingness;
+	}
+
+	public void setWillingness(String willingness) {
+		this.willingness = willingness;
+	}
+
 }

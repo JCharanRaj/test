@@ -115,6 +115,7 @@ public class StudentService {
 		student.setPreviousClass(studentRequest.getPreviousClass());
 		student.setPreviousSchool(studentRequest.getPreviousSchool());
 		student.setRelationship(studentRequest.getRelationship());
+		student.setWillingness(studentRequest.getWillingness());
 		return student;
 	}
 

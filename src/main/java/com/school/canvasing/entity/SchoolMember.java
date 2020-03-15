@@ -21,12 +21,14 @@ public class SchoolMember extends BaseEntity{
 	@Column(name="name")
 	private String name;
 	
-	
 	@Column(name="status")
 	private String status;
 	
 	@Column(name="login_status")
 	private String loginStatus;
+	
+	@Column(name="rank", columnDefinition = "integer default 0")
+	private long rank;
 
 	public String getMobileNumber() {
 		return mobileNumber;
@@ -74,6 +76,14 @@ public class SchoolMember extends BaseEntity{
 
 	public void setLoginStatus(String loginStatus) {
 		this.loginStatus = loginStatus;
+	}
+
+	public long getRank() {
+		return rank;
+	}
+
+	public void setRank(long rank) {
+		this.rank = rank;
 	}
 	
 
