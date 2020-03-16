@@ -129,6 +129,7 @@ public class SchoolMemberService {
 			teacher.setLongitude(teacherLocation.getCurrentLongitude());
 			teacher.setDistance(getPriceInDecimal(teacherLocation.getDistance()));
 		}
+		teacher.setRank(member.getRank());
 		teacher.setName(member.getName());
 		return teacher;
 	}
@@ -237,6 +238,7 @@ public class SchoolMemberService {
 		teacherInfo.setTotalDistance(teacherLocations.stream().mapToDouble(a -> a.getDistance()).sum());
 		teacherInfo.setAttentedDays(teacherLocations.size());
 		teacherInfo.setWillingness(getWillingnessData(studentsList));
+		teacherInfo.setRank(schoolMember.get().getRank());
 		if(!teacherLocations.isEmpty()) {
 			teacherInfo.setLastTimeUsed(teacherLocations.get(teacherLocations.size()-1).getDate());
 		}

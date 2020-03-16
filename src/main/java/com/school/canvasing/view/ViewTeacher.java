@@ -7,6 +7,7 @@ public class ViewTeacher {
 	private String longitude;
 	private String latitude;
 	private double distance;
+	private long rank;
 
 	public long getId() {
 		return id;
@@ -47,4 +48,14 @@ public class ViewTeacher {
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
+
+	public long getRank() {
+		return rank;
+	}
+
+	public void setRank(long rank) {
+		this.rank = rank;
+	}
+	
+	
 }

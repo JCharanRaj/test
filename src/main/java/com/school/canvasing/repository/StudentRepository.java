@@ -23,4 +23,8 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 	List<Student> findByTeacher(SchoolMember schoolMember);
 
 
+	@Query(value = "select teacher_id,coalesce(count(id),0) from student group by teacher_id", nativeQuery = true)
+	List<Object[]> getTeacherRank();
+
+
 }

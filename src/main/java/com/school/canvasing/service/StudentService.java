@@ -1,6 +1,8 @@
 package com.school.canvasing.service;
 
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -70,10 +72,25 @@ public class StudentService {
 		List<Student> students = createStudentRequest.getStudentRequests().stream()
 				.map(studentRequest -> saveStudent(newParentDetails, studentRequest, teacher)).collect(Collectors.toList());		
 		studentRepository.saveAll(students);
+		List<Object[]> tecahers= studentRepository.getTeacherRank();
+		setTecahersRank(tecahers);
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.STUDENT_CREATED);
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	}
+
+	private void setTecahersRank(List<Object[]> tecahers) {
+		
+		tecahers.forEach(object ->{
+			long memberId= ((BigInteger)object[0]).longValue();
+			Optional<SchoolMember> member= schoolMemberRepository.findById(memberId);
+			if(member.isPresent()) {
+				member.get().setRank(tecahers.indexOf(object)+1);
+				schoolMemberRepository.save(member.get());
+			}
+		});
+		
 	}
 
 	private void checkRequest(CreateStudentRequest studentRequest) {
