@@ -5,6 +5,7 @@ public class UpdateTeacherLocation {
 	private long id;
 	private String longitude;
 	private String latitude;
+	private String locationName;
 
 	public long getId() {
 		return id;
@@ -28,6 +29,14 @@ public class UpdateTeacherLocation {
 
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 
 }

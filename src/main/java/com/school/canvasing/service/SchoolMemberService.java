@@ -128,6 +128,7 @@ public class SchoolMemberService {
 			teacher.setLatitude(teacherLocation.getCurrentLatitude());
 			teacher.setLongitude(teacherLocation.getCurrentLongitude());
 			teacher.setDistance(getPriceInDecimal(teacherLocation.getDistance()));
+			teacher.setLocationName(teacherLocation.getLocationName());
 		}
 		teacher.setRank(member.getRank());
 		teacher.setName(member.getName());
@@ -143,33 +144,38 @@ public class SchoolMemberService {
 			throw new LoginException(Constants.USER_NOT_TEACHER);
 		}
 		SchoolMember member = schoolMember.get();
-		TeacherLocation teacherLocation = teacherLocationRepository.findByTeacherAndDate(member,
-				DateAndTimeUtil.now().toLocalDate());
+		TeacherLocation teacherLocation = null;
+		teacherLocation = teacherLocationRepository.findByTeacherAndDate(member, DateAndTimeUtil.now().toLocalDate());
 		if (teacherLocation == null) {
-			TeacherLocation newTeacherLocation = new TeacherLocation();
-			newTeacherLocation.setInitialLatitude(updateTeacherLocation.getLatitude());
-			newTeacherLocation.setInitialLongitude(updateTeacherLocation.getLongitude());
-			newTeacherLocation.setCurrentLatitude(updateTeacherLocation.getLatitude());
-			newTeacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
-			newTeacherLocation.setCreatedTime(DateAndTimeUtil.now());
-			newTeacherLocation.setUpdatedTime(DateAndTimeUtil.now());
-			newTeacherLocation.setDate(DateAndTimeUtil.now().toLocalDate());
-			newTeacherLocation.setTeacher(member);
-			teacherLocationRepository.save(newTeacherLocation);
+			teacherLocation = getTeacherLocation(updateTeacherLocation, new TeacherLocation(), true, member);
 		} else {
 			double distance = distance(teacherLocation.getCurrentLatitude(), teacherLocation.getCurrentLongitude(),
 					updateTeacherLocation.getLatitude(), updateTeacherLocation.getLongitude());
-			teacherLocation.setCurrentLatitude(updateTeacherLocation.getLatitude());
-			teacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
-			teacherLocation.setUpdatedTime(DateAndTimeUtil.now());
+			teacherLocation = getTeacherLocation(updateTeacherLocation, new TeacherLocation(), false, member);
 			teacherLocation.setDistance(getPriceInDecimal(teacherLocation.getDistance() + distance));
-			teacherLocationRepository.save(teacherLocation);
 		}
+		teacherLocationRepository.save(teacherLocation);
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setId(member.getId());
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setMessage(Constants.UPDATE_TEACHER_LOCATION);
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	}
+
+	private TeacherLocation getTeacherLocation(UpdateTeacherLocation updateTeacherLocation,
+			TeacherLocation teacherLocation, boolean newLocation, SchoolMember member) {
+		teacherLocation.setCurrentLatitude(updateTeacherLocation.getLatitude());
+		teacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
+		teacherLocation.setUpdatedTime(DateAndTimeUtil.now());
+		teacherLocation.setLocationName(updateTeacherLocation.getLocationName());
+		if (newLocation) {
+			teacherLocation.setInitialLatitude(updateTeacherLocation.getLatitude());
+			teacherLocation.setInitialLongitude(updateTeacherLocation.getLongitude());
+			teacherLocation.setCreatedTime(DateAndTimeUtil.now());
+			teacherLocation.setTeacher(member);
+			teacherLocation.setDate(DateAndTimeUtil.now().toLocalDate());
+		}
+		return teacherLocation;
 	}
 
 	public ResponseEntity<ViewResponse> logoutSchoolMember(long id) {
@@ -239,8 +245,9 @@ public class SchoolMemberService {
 		teacherInfo.setAttentedDays(teacherLocations.size());
 		teacherInfo.setWillingness(getWillingnessData(studentsList));
 		teacherInfo.setRank(schoolMember.get().getRank());
-		if(!teacherLocations.isEmpty()) {
-			teacherInfo.setLastTimeUsed(teacherLocations.get(teacherLocations.size()-1).getDate());
+		if (!teacherLocations.isEmpty()) {
+			teacherInfo.setLastTimeUsed(teacherLocations.get(teacherLocations.size() - 1).getDate());
+			teacherInfo.setLocationName(teacherLocations.get(teacherLocations.size() - 1).getLocationName());
 		}
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setStatus(Constants.SUCCESS);

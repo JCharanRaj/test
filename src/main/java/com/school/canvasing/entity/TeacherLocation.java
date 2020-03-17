@@ -33,6 +33,9 @@ public class TeacherLocation extends BaseEntity {
 
 	@Column(name="distance", columnDefinition="Decimal(10,2) default '0.00'")
 	private double distance;
+	
+	@Column(name="location_name")
+	private String locationName;
 
 	public String getInitialLongitude() {
 		return initialLongitude;
@@ -88,6 +91,14 @@ public class TeacherLocation extends BaseEntity {
 
 	public void setDistance(double distance) {
 		this.distance = distance;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 
 }

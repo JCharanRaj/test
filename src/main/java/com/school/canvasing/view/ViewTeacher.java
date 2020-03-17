@@ -7,6 +7,7 @@ public class ViewTeacher {
 	private String longitude;
 	private String latitude;
 	private double distance;
+	private String locationName;
 	private long rank;
 
 	public long getId() {
@@ -55,6 +56,14 @@ public class ViewTeacher {
 
 	public void setRank(long rank) {
 		this.rank = rank;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 	
 	
