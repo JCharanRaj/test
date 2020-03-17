@@ -168,7 +168,7 @@ public class SchoolMemberService {
 		teacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
 		teacherLocation.setUpdatedTime(DateAndTimeUtil.now());
 		teacherLocation.setLocationName(updateTeacherLocation.getLocationName());
-		if (newLocation) {
+		if (newLocation) { 
 			teacherLocation.setInitialLatitude(updateTeacherLocation.getLatitude());
 			teacherLocation.setInitialLongitude(updateTeacherLocation.getLongitude());
 			teacherLocation.setCreatedTime(DateAndTimeUtil.now());
@@ -245,8 +245,8 @@ public class SchoolMemberService {
 		teacherInfo.setAttentedDays(teacherLocations.size());
 		teacherInfo.setWillingness(getWillingnessData(studentsList));
 		teacherInfo.setRank(schoolMember.get().getRank());
+		teacherInfo.setLastTimeUsed(schoolMember.get().getUpdatedTime().toLocalDate());
 		if (!teacherLocations.isEmpty()) {
-			teacherInfo.setLastTimeUsed(teacherLocations.get(teacherLocations.size() - 1).getDate());
 			teacherInfo.setLocationName(teacherLocations.get(teacherLocations.size() - 1).getLocationName());
 		}
 		ViewResponse viewResponse = new ViewResponse();
