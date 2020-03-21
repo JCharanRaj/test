@@ -151,7 +151,7 @@ public class SchoolMemberService {
 		} else {
 			double distance = distance(teacherLocation.getCurrentLatitude(), teacherLocation.getCurrentLongitude(),
 					updateTeacherLocation.getLatitude(), updateTeacherLocation.getLongitude());
-			teacherLocation = getTeacherLocation(updateTeacherLocation, new TeacherLocation(), false, member);
+			teacherLocation = getTeacherLocation(updateTeacherLocation, teacherLocation, false, member);
 			teacherLocation.setDistance(getPriceInDecimal(teacherLocation.getDistance() + distance));
 		}
 		teacherLocationRepository.save(teacherLocation);
