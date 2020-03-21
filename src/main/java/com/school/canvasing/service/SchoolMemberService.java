@@ -21,7 +21,6 @@ import com.school.canvasing.common.SchoolMemberRole;
 import com.school.canvasing.entity.SchoolMember;
 import com.school.canvasing.entity.Student;
 import com.school.canvasing.entity.TeacherLocation;
-import com.school.canvasing.exception.ExceptionHandle;
 import com.school.canvasing.exception.LoginException;
 import com.school.canvasing.exception.UserNotException;
 import com.school.canvasing.repository.SchoolMemberRepository;
@@ -39,7 +38,7 @@ import com.school.canvasing.view.WillingnessData;
 @Service
 public class SchoolMemberService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandle.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SchoolMemberService.class);
 
 	@Autowired
 	SchoolMemberRepository schoolMemberRepository;
