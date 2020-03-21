@@ -52,4 +52,13 @@ public class ExceptionHandle extends ResponseEntityExceptionHandler {
 	}
 	
 	
+	@ExceptionHandler(MemberOtpException.class)
+	public final ResponseEntity<ErrorResponse> handleMemberOtpException(
+			MemberOtpException exception, WebRequest request) {
+		LOGGER.info("Exceptin cause: "+exception.getMessage());
+		ErrorResponse errorResponse = new ErrorResponse(Constants.FAILED,exception.getLocalizedMessage(), request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.ACCEPTED);
+	}
+	
+	
 }
