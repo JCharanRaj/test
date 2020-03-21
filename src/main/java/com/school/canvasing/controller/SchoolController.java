@@ -19,6 +19,7 @@ import com.school.canvasing.command.GetTeacherInfoCommand;
 import com.school.canvasing.command.GetTeachersCommand;
 import com.school.canvasing.command.LoginSchoolMemberCommand;
 import com.school.canvasing.command.LogoutCommand;
+import com.school.canvasing.command.SendOtpCommand;
 import com.school.canvasing.command.UpdateTeacherLocationCommand;
 import com.school.canvasing.exception.ErrorResponse;
 import com.school.canvasing.request.CreateMemberRequest;
@@ -55,6 +56,9 @@ public class SchoolController {
 	
 	@Autowired
 	LogoutCommand logoutCommand;
+	
+	@Autowired
+	SendOtpCommand sendOtpCommand;
 		
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
@@ -113,6 +117,15 @@ public class SchoolController {
 	public ResponseEntity<ViewResponse> logoutSchoolMember(@PathVariable long id) {
 		return logoutCommand.execute(id);
 	}
+	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
+	@PostMapping(value = "/sendOtp/{mobileNumber}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> updateTeacherLocation(@PathVariable String mobileNumber) {
+		return sendOtpCommand.execute(mobileNumber);
+	}
+	
 	
 	
 }

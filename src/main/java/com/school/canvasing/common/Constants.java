@@ -33,5 +33,12 @@ public class Constants {
 	
 	public static final String VERIFY_MPIN = "Verify your mpin";
 	public static final String OTP_SENT = "OTP sent";
+	public static final String OTP_MESSAGE ="<otp> is the Onetime password (OTP) for your login. Do not share this";
+	
+	public static final String SMS_URL = "<sms url>?key=<sms key>&campaign=0&routeid=13&"
+			+ "type=text&contacts=<mobile number>&senderid=<sender id>&msg=<message>";
+	public static final String OTP_EXCEPTION_MESSAGE = "We are unable to send otp to your mobile::";
+
+
 	
 }
