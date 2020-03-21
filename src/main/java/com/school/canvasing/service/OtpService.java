@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.school.canvasing.common.Constants;
 import com.school.canvasing.entity.MemberOtp;
 import com.school.canvasing.repository.MemberOtpRepository;
 import com.school.canvasing.repository.SchoolMemberRepository;
@@ -24,12 +25,15 @@ public class OtpService {
 	public ViewResponse sendOtp(String mobileNumber) {
 		MemberOtp memberOtp = memberOtpRepository.findByMobileNumber(mobileNumber);
 		ViewResponse response = new ViewResponse();
-		if (memberOtp != null) {
-
+		response.setStatus(Constants.SUCCESS);
+		if (memberOtp != null) {			
+			
+			response.setMessage(Constants.VERIFY_MPIN);
 		} else {
-
+			// write 
+			response.setMessage(Constants.OTP_SENT);
 		}
-		return null;
+		return response;
 	}
 
 	private String getMessage(String number, String message) {
