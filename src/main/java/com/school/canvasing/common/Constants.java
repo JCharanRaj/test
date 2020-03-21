@@ -30,4 +30,8 @@ public class Constants {
 	
 	public static final String AADHAR ="Aadhar number must be 12 charecters";
 	
+	
+	public static final String VERIFY_MPIN = "Verify your mpin";
+	public static final String OTP_SENT = "OTP sent";
+	
 }
