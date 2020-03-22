@@ -19,12 +19,14 @@ import com.school.canvasing.command.GetTeacherInfoCommand;
 import com.school.canvasing.command.GetTeachersCommand;
 import com.school.canvasing.command.LoginSchoolMemberCommand;
 import com.school.canvasing.command.LogoutCommand;
+import com.school.canvasing.command.MpinCommand;
 import com.school.canvasing.command.SendOtpCommand;
 import com.school.canvasing.command.UpdateTeacherLocationCommand;
 import com.school.canvasing.exception.ErrorResponse;
 import com.school.canvasing.request.CreateMemberRequest;
 import com.school.canvasing.request.CreateStudentRequest;
 import com.school.canvasing.request.LoginRequest;
+import com.school.canvasing.request.MpinRequest;
 import com.school.canvasing.request.UpdateTeacherLocation;
 import com.school.canvasing.view.ViewResponse;
 
@@ -59,6 +61,9 @@ public class SchoolController {
 	
 	@Autowired
 	SendOtpCommand sendOtpCommand;
+	
+	@Autowired
+	MpinCommand mpinCommand;
 		
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
@@ -126,6 +131,13 @@ public class SchoolController {
 		return sendOtpCommand.execute(mobileNumber);
 	}
 	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
+	@PostMapping(value = "/saveMpin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> mpinRequest(@RequestBody MpinRequest mpinRequest) {
+		return mpinCommand.execute(mpinRequest);
+	}
 	
 	
 }

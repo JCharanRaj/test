@@ -4,30 +4,29 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-
 @Entity(name = "school_member")
 @Table(name = "SCHOOL_MEMBER")
-public class SchoolMember extends BaseEntity{
+public class SchoolMember extends BaseEntity {
 
-	@Column(name="mobile_number")
+	@Column(name = "mobile_number")
 	private String mobileNumber;
-	
-	@Column(name="password")
-	private String password;
-	
-	@Column(name="role")
+
+	@Column(name = "mpin")
+	private String mpin;
+
+	@Column(name = "role")
 	private String role;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
-	@Column(name="status")
+
+	@Column(name = "status")
 	private String status;
-	
-	@Column(name="login_status")
+
+	@Column(name = "login_status")
 	private String loginStatus;
-	
-	@Column(name="rank", columnDefinition = "integer default 0")
+
+	@Column(name = "rank", columnDefinition = "integer default 0")
 	private long rank;
 
 	public String getMobileNumber() {
@@ -38,12 +37,12 @@ public class SchoolMember extends BaseEntity{
 		this.mobileNumber = mobileNumber;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getMpin() {
+		return mpin;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setMpin(String mpin) {
+		this.mpin = mpin;
 	}
 
 	public String getRole() {
@@ -85,7 +84,5 @@ public class SchoolMember extends BaseEntity{
 	public void setRank(long rank) {
 		this.rank = rank;
 	}
-	
 
-	
 }

@@ -60,8 +60,7 @@ public class OtpService {
 		return response;
 	}
 
-	private String getSmsApiUrl(String mobileNumber,String otp) {
-		
+	private String getSmsApiUrl(String mobileNumber,String otp) {		
 		String otpUrl = Constants.SMS_URL;
 		String otpMessage = Constants.OTP_MESSAGE;
 		otpMessage = otpMessage.replace("<otp>", otp);
@@ -74,17 +73,19 @@ public class OtpService {
 	}
 
 	private String generateOtp(int length) {
-		LOGGER.info("Generating OTP using random() : ");
-		LOGGER.info("You OTP is : ");
 		String numbers = "0123456789";
 		Random rndmMethod = new Random();
-
 		char[] otp = new char[length];
-
 		for (int i = 0; i < length; i++) {
 			otp[i] = numbers.charAt(rndmMethod.nextInt(numbers.length()));
 		}
 		return String.valueOf(otp);
+	}
+	
+	public ViewResponse get() {
+		
+		
+		return null;		
 	}
 
 }
