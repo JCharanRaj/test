@@ -28,6 +28,7 @@ import com.school.canvasing.repository.StudentRepository;
 import com.school.canvasing.repository.TeacherLocationRepository;
 import com.school.canvasing.request.CreateMemberRequest;
 import com.school.canvasing.request.LoginRequest;
+import com.school.canvasing.request.MpinRequest;
 import com.school.canvasing.request.UpdateTeacherLocation;
 import com.school.canvasing.view.ViewResponse;
 import com.school.canvasing.view.ViewTeacher;
@@ -58,8 +59,8 @@ public class SchoolMemberService {
 		if (!loginRequest.getMobileNumber().equalsIgnoreCase(schoolMember.getMobileNumber())) {
 			throw new LoginException(Constants.INCORRECT_MOBILE);
 		}
-		if (!loginRequest.getPassword().equals(schoolMember.getPassword())) {
-			throw new LoginException(Constants.INCORRECT_PASSWORD);
+		if (!loginRequest.getPassword().equals(schoolMember.getMpin())) {
+			throw new LoginException(Constants.INCORRECT_MPIN);
 		}
 		schoolMember.setLoginStatus(Constants.ACTIVE);
 		schoolMember.setUpdatedTime(DateAndTimeUtil.now());
@@ -86,7 +87,7 @@ public class SchoolMemberService {
 		member.setCreatedTime(DateAndTimeUtil.now());
 		member.setUpdatedTime(DateAndTimeUtil.now());
 		member.setMobileNumber(createMemberRequest.getMobileNumber());
-		member.setPassword(createMemberRequest.getPassword());
+		member.setMpin(createMemberRequest.getPassword());
 		member.setRole(createMemberRequest.getRole().toString());
 		member.setName(createMemberRequest.getName());
 		schoolMemberRepository.save(member);
@@ -281,5 +282,24 @@ public class SchoolMemberService {
 			}
 		});
 		return willingnessMap;
+	}
+
+	public ResponseEntity<ViewResponse> saveMpin(MpinRequest request) {
+		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(request.getMobileNumber());
+		if (schoolMember==null) {
+			throw new UserNotException(Constants.USER_NOT_FOUND + request.getMobileNumber());
+		}
+		/*
+		 * if (!schoolMember.get().getRole().equalsIgnoreCase(SchoolMemberRole.TEACHER.
+		 * toString())) { throw new LoginException(Constants.USER_NOT_TEACHER); }
+		 */
+		schoolMember.setMpin(request.getMpin());
+		schoolMember.setUpdatedTime(DateAndTimeUtil.now());
+		schoolMemberRepository.save(schoolMember);
+		ViewResponse viewResponse = new ViewResponse();
+		viewResponse.setId(schoolMember.getId());
+		viewResponse.setStatus(Constants.SUCCESS);
+		viewResponse.setMessage(Constants.MPIN_SAVE);
+		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 }
