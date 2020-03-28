@@ -12,8 +12,11 @@ import com.school.canvasing.adapter.MemberAdapter;
 import com.school.canvasing.common.Constants;
 import com.school.canvasing.common.DateAndTimeUtil;
 import com.school.canvasing.entity.MemberOtp;
+import com.school.canvasing.entity.SchoolMember;
+import com.school.canvasing.exception.UserNotException;
 import com.school.canvasing.repository.MemberOtpRepository;
 import com.school.canvasing.repository.SchoolMemberRepository;
+import com.school.canvasing.request.VerifyOtpRequest;
 import com.school.canvasing.view.ViewResponse;
 
 @Service
@@ -39,17 +42,22 @@ public class OtpService {
 	MemberAdapter memberAdapter;
 
 	public ViewResponse sendOtp(String mobileNumber) {
+		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(mobileNumber);
+		if (schoolMember == null) {
+			throw new UserNotException(Constants.USER_NOT_FOUND);
+		}
+
 		MemberOtp memberOtp = memberOtpRepository.findByMobileNumber(mobileNumber);
 		ViewResponse response = new ViewResponse();
 		response.setStatus(Constants.SUCCESS);
 		if (memberOtp != null) {
 			response.setMessage(Constants.VERIFY_MPIN);
 		} else {
-			String otp= generateOtp(4);
-			String otpResponse = memberAdapter.sendOtp(getSmsApiUrl(mobileNumber,otp),mobileNumber);
+			String otp = generateOtp(4);
+			String otpResponse = memberAdapter.sendOtp(getSmsApiUrl(mobileNumber, otp), mobileNumber);
 			if (otpResponse != null) {
 				response.setMessage(Constants.OTP_SENT);
-				MemberOtp newMemberOtp =new MemberOtp();
+				MemberOtp newMemberOtp = new MemberOtp();
 				newMemberOtp.setCreatedTime(DateAndTimeUtil.now());
 				newMemberOtp.setMobileNumber(mobileNumber);
 				newMemberOtp.setOtp(otp);
@@ -60,7 +68,7 @@ public class OtpService {
 		return response;
 	}
 
-	private String getSmsApiUrl(String mobileNumber,String otp) {		
+	private String getSmsApiUrl(String mobileNumber, String otp) {
 		String otpUrl = Constants.SMS_URL;
 		String otpMessage = Constants.OTP_MESSAGE;
 		otpMessage = otpMessage.replace("<otp>", otp);
@@ -81,11 +89,52 @@ public class OtpService {
 		}
 		return String.valueOf(otp);
 	}
-	
+
 	public ViewResponse get() {
-		
-		
-		return null;		
+		return null;
+	}
+
+	public ViewResponse verifyOtp(VerifyOtpRequest verifyOtpRequest) {
+		String mobileNumber = verifyOtpRequest.getMobileNumber();
+		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(mobileNumber);
+		if (schoolMember == null) {
+			throw new UserNotException(Constants.USER_NOT_FOUND);
+		}
+		MemberOtp memberOtp = memberOtpRepository.findByMobileNumber(mobileNumber);
+		ViewResponse response = new ViewResponse();
+		if (memberOtp != null && verifyOtpRequest.getOtp().equalsIgnoreCase(memberOtp.getOtp())) {
+			response.setStatus(Constants.SUCCESS);
+			response.setMessage(Constants.OTP_VERIFIED);
+		} else {
+			response.setStatus(Constants.FAILED);
+			response.setMessage(Constants.INCORRECT_OTP);
+		}
+		return response;
+	}
+
+	public ViewResponse resendOtp(String mobileNumber) {
+		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(mobileNumber);
+		if (schoolMember == null) {
+			throw new UserNotException(Constants.USER_NOT_FOUND);
+		}
+		MemberOtp memberOtp = memberOtpRepository.findByMobileNumber(mobileNumber);
+		ViewResponse response = new ViewResponse();
+
+		if (memberOtp != null) {
+			String otpResponse = memberAdapter.sendOtp(getSmsApiUrl(mobileNumber, memberOtp.getOtp()), mobileNumber);
+			if (otpResponse != null) {
+				response.setStatus(Constants.SUCCESS);
+				response.setMessage(Constants.OTP_SENT);
+			} else {
+				response.setStatus(Constants.FAILED);
+				response.setMessage("Please try after sometime");
+			}
+		}
+		 else {
+				response.setStatus(Constants.FAILED);
+				response.setMessage("Please check your mobile number");
+			}
+		return response;
 	}
 
 }

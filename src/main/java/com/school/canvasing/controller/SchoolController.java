@@ -20,14 +20,17 @@ import com.school.canvasing.command.GetTeachersCommand;
 import com.school.canvasing.command.LoginSchoolMemberCommand;
 import com.school.canvasing.command.LogoutCommand;
 import com.school.canvasing.command.MpinCommand;
+import com.school.canvasing.command.ResendOtpCommand;
 import com.school.canvasing.command.SendOtpCommand;
 import com.school.canvasing.command.UpdateTeacherLocationCommand;
+import com.school.canvasing.command.VerifyOtpCommand;
 import com.school.canvasing.exception.ErrorResponse;
 import com.school.canvasing.request.CreateMemberRequest;
 import com.school.canvasing.request.CreateStudentRequest;
 import com.school.canvasing.request.LoginRequest;
 import com.school.canvasing.request.MpinRequest;
 import com.school.canvasing.request.UpdateTeacherLocation;
+import com.school.canvasing.request.VerifyOtpRequest;
 import com.school.canvasing.view.ViewResponse;
 
 import io.swagger.annotations.ApiResponse;
@@ -64,6 +67,12 @@ public class SchoolController {
 	
 	@Autowired
 	MpinCommand mpinCommand;
+	
+	@Autowired
+	VerifyOtpCommand verifyOtpCommand;
+	
+	@Autowired
+	ResendOtpCommand resendOtpCommand;
 		
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
@@ -126,7 +135,7 @@ public class SchoolController {
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
-	@PostMapping(value = "/sendOtp/{mobileNumber}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/sendOtp/{mobileNumber}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ViewResponse> updateTeacherLocation(@PathVariable String mobileNumber) {
 		return sendOtpCommand.execute(mobileNumber);
 	}
@@ -139,5 +148,20 @@ public class SchoolController {
 		return mpinCommand.execute(mpinRequest);
 	}
 	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
+	@PostMapping(value = "/verifyOtp", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> verifyOtp(@RequestBody VerifyOtpRequest verifyOtpRequest) {
+		return verifyOtpCommand.execute(verifyOtpRequest);
+	}
+	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
+	@GetMapping(value = "/resendOtp/{mobileNumber}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> resendOtp(@PathVariable String mobileNumber) {
+		return resendOtpCommand.execute(mobileNumber);
+	}
 	
 }

@@ -13,6 +13,10 @@ public class SchoolMember extends BaseEntity {
 
 	@Column(name = "mpin")
 	private String mpin;
+	
+	@Column(name = "password")
+	private String password;
+
 
 	@Column(name = "role")
 	private String role;
@@ -83,6 +87,14 @@ public class SchoolMember extends BaseEntity {
 
 	public void setRank(long rank) {
 		this.rank = rank;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

@@ -53,7 +53,7 @@ public class SchoolMemberService {
 	public ResponseEntity<ViewResponse> loginSchoolMember(LoginRequest loginRequest) {
 		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(loginRequest.getMobileNumber());
 		if (schoolMember == null) {
-			throw new UserNotException(Constants.USER_NOT_FOUND + loginRequest.getMobileNumber());
+			throw new UserNotException(Constants.USER_NOT_FOUND);
 		}
 
 		if (!loginRequest.getMobileNumber().equalsIgnoreCase(schoolMember.getMobileNumber())) {
@@ -287,13 +287,14 @@ public class SchoolMemberService {
 	public ResponseEntity<ViewResponse> saveMpin(MpinRequest request) {
 		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(request.getMobileNumber());
 		if (schoolMember==null) {
-			throw new UserNotException(Constants.USER_NOT_FOUND + request.getMobileNumber());
+			throw new UserNotException(Constants.USER_NOT_FOUND);
 		}
 		/*
 		 * if (!schoolMember.get().getRole().equalsIgnoreCase(SchoolMemberRole.TEACHER.
 		 * toString())) { throw new LoginException(Constants.USER_NOT_TEACHER); }
 		 */
 		schoolMember.setMpin(request.getMpin());
+		schoolMember.setPassword(request.getMpin());
 		schoolMember.setUpdatedTime(DateAndTimeUtil.now());
 		schoolMemberRepository.save(schoolMember);
 		ViewResponse viewResponse = new ViewResponse();
