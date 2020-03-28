@@ -17,7 +17,6 @@ public class LoginSchoolMemberCommand implements Command<LoginRequest, ResponseE
     SchoolMemberService schoolMemberService;
     
 	public ResponseEntity<ViewResponse> execute(LoginRequest loginRequest) {
-
 	       
         return schoolMemberService.loginSchoolMember(loginRequest);
 	}
