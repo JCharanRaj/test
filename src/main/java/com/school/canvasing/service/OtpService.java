@@ -18,6 +18,7 @@ import com.school.canvasing.repository.MemberOtpRepository;
 import com.school.canvasing.repository.SchoolMemberRepository;
 import com.school.canvasing.request.VerifyOtpRequest;
 import com.school.canvasing.view.ViewResponse;
+import com.school.canvasing.view.ViewUser;
 
 @Service
 public class OtpService {
@@ -56,13 +57,20 @@ public class OtpService {
 			String otp = generateOtp(4);
 			String otpResponse = memberAdapter.sendOtp(getSmsApiUrl(mobileNumber, otp), mobileNumber);
 			if (otpResponse != null) {
-				response.setMessage(Constants.OTP_SENT);
+
 				MemberOtp newMemberOtp = new MemberOtp();
 				newMemberOtp.setCreatedTime(DateAndTimeUtil.now());
 				newMemberOtp.setMobileNumber(mobileNumber);
 				newMemberOtp.setOtp(otp);
 				newMemberOtp.setUpdatedTime(DateAndTimeUtil.now());
 				memberOtpRepository.save(newMemberOtp);
+				ViewUser viewUser = new ViewUser();
+				viewUser.setRole(schoolMember.getRole());
+				viewUser.setId(schoolMember.getId());
+				viewUser.setUserName(schoolMember.getName());
+				response.setId(schoolMember.getId());
+				response.setMessage(Constants.OTP_SENT);
+				response.setData(viewUser);
 			}
 		}
 		return response;
@@ -102,7 +110,13 @@ public class OtpService {
 		}
 		MemberOtp memberOtp = memberOtpRepository.findByMobileNumber(mobileNumber);
 		ViewResponse response = new ViewResponse();
-		if (memberOtp != null && verifyOtpRequest.getOtp().equalsIgnoreCase(memberOtp.getOtp())) {
+		if (memberOtp != null && verifyOtpRequest.getOtp().equalsIgnoreCase(memberOtp.getOtp())) {			
+			ViewUser viewUser = new ViewUser();
+			viewUser.setRole(schoolMember.getRole());
+			viewUser.setId(schoolMember.getId());
+			viewUser.setUserName(schoolMember.getName());
+			response.setId(schoolMember.getId());
+			response.setData(viewUser);
 			response.setStatus(Constants.SUCCESS);
 			response.setMessage(Constants.OTP_VERIFIED);
 		} else {
@@ -122,18 +136,23 @@ public class OtpService {
 
 		if (memberOtp != null) {
 			String otpResponse = memberAdapter.sendOtp(getSmsApiUrl(mobileNumber, memberOtp.getOtp()), mobileNumber);
-			if (otpResponse != null) {
+			if (otpResponse != null) {				
+				ViewUser viewUser = new ViewUser();
+				viewUser.setRole(schoolMember.getRole());
+				viewUser.setId(schoolMember.getId());
+				viewUser.setUserName(schoolMember.getName());
+				response.setId(schoolMember.getId());
+				response.setData(viewUser);
 				response.setStatus(Constants.SUCCESS);
 				response.setMessage(Constants.OTP_SENT);
 			} else {
 				response.setStatus(Constants.FAILED);
 				response.setMessage("Please try after sometime");
 			}
+		} else {
+			response.setStatus(Constants.FAILED);
+			response.setMessage("Please check your mobile number");
 		}
-		 else {
-				response.setStatus(Constants.FAILED);
-				response.setMessage("Please check your mobile number");
-			}
 		return response;
 	}
 

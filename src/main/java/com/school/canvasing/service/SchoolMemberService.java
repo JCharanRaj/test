@@ -168,7 +168,7 @@ public class SchoolMemberService {
 		teacherLocation.setCurrentLongitude(updateTeacherLocation.getLongitude());
 		teacherLocation.setUpdatedTime(DateAndTimeUtil.now());
 		teacherLocation.setLocationName(updateTeacherLocation.getLocationName());
-		if (newLocation) { 
+		if (newLocation) {
 			teacherLocation.setInitialLatitude(updateTeacherLocation.getLatitude());
 			teacherLocation.setInitialLongitude(updateTeacherLocation.getLongitude());
 			teacherLocation.setCreatedTime(DateAndTimeUtil.now());
@@ -286,7 +286,7 @@ public class SchoolMemberService {
 
 	public ResponseEntity<ViewResponse> saveMpin(MpinRequest request) {
 		SchoolMember schoolMember = schoolMemberRepository.findByMobileNumber(request.getMobileNumber());
-		if (schoolMember==null) {
+		if (schoolMember == null) {
 			throw new UserNotException(Constants.USER_NOT_FOUND);
 		}
 		/*
