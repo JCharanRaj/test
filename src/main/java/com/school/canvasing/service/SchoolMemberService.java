@@ -87,7 +87,7 @@ public class SchoolMemberService {
 		member.setCreatedTime(DateAndTimeUtil.now());
 		member.setUpdatedTime(DateAndTimeUtil.now());
 		member.setMobileNumber(createMemberRequest.getMobileNumber());
-		member.setMpin(createMemberRequest.getPassword());
+		member.setPassword(createMemberRequest.getPassword());
 		member.setRole(createMemberRequest.getRole().toString());
 		member.setName(createMemberRequest.getName());
 		schoolMemberRepository.save(member);
