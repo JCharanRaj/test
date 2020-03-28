@@ -17,7 +17,7 @@ public class Constants {
 	public static final String INCORRECT_MOBILE = "incorrect mobile number";
 	public static final String INCORRECT_MPIN = "incorrect mpin";
 	public static final String USER_NOT_FOUND_WITH_ID = "No user found with Id: ";
-	public static final String USER_NOT_FOUND = "No user found with mobile number: ";
+	public static final String USER_NOT_FOUND = "This mobile number does not exists, please contact your Principal";
 	public static final String USER_NOT_PRINCIPAL = "User not Principal to show teachers data";
 	public static final String USER_NOT_TEACHER = "User not a Teacher";
 	public static final String USER_NOT_TEACHER_TO_ADD_STUDENT = "User not a Teacher to add student";
@@ -33,6 +33,8 @@ public class Constants {
 	
 	public static final String VERIFY_MPIN = "Verify your mpin";
 	public static final String OTP_SENT = "OTP sent";
+	public static final String OTP_VERIFIED = "Otp verified successfully";
+	public static final String INCORRECT_OTP = "incorrect otp";
 	public static final String OTP_MESSAGE ="<otp> is the Onetime password (OTP) for your login. Do not share this";
 	
 	public static final String SMS_URL = "<sms url>?key=<sms key>&campaign=0&routeid=13&"
