@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.school.canvasing.command.CreateMemberCommand;
 import com.school.canvasing.command.CreateStudentCommand;
+import com.school.canvasing.command.GetStudentsCommand;
 import com.school.canvasing.command.GetTeacherInfoCommand;
 import com.school.canvasing.command.GetTeachersCommand;
 import com.school.canvasing.command.LoginSchoolMemberCommand;
@@ -73,6 +74,9 @@ public class SchoolController {
 	
 	@Autowired
 	ResendOtpCommand resendOtpCommand;
+	
+	@Autowired
+	GetStudentsCommand getStudentsCommand;
 		
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
@@ -162,6 +166,15 @@ public class SchoolController {
 	@GetMapping(value = "/resendOtp/{mobileNumber}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ViewResponse> resendOtp(@PathVariable String mobileNumber) {
 		return resendOtpCommand.execute(mobileNumber);
+	}
+	
+	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
+	@GetMapping(value = "/getStudents/{teacherId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> getStudents(@PathVariable Long teacherId) {
+		return getStudentsCommand.execute(teacherId);
 	}
 	
 }

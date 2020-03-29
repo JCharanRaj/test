@@ -1,6 +1,7 @@
 package com.school.canvasing.service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,12 +21,14 @@ import com.school.canvasing.entity.SchoolMember;
 import com.school.canvasing.entity.Student;
 import com.school.canvasing.exception.LoginException;
 import com.school.canvasing.exception.StudentException;
+import com.school.canvasing.exception.UserNotException;
 import com.school.canvasing.repository.ParentDetailsRepository;
 import com.school.canvasing.repository.SchoolMemberRepository;
 import com.school.canvasing.repository.StudentRepository;
 import com.school.canvasing.request.CreateStudentRequest;
 import com.school.canvasing.request.StudentRequest;
 import com.school.canvasing.view.ViewResponse;
+import com.school.canvasing.view.ViewStudent;
 
 @Service
 public class StudentService {
@@ -134,6 +137,31 @@ public class StudentService {
 		student.setRelationship(studentRequest.getRelationship());
 		student.setWillingness(studentRequest.getWillingness());
 		return student;
+	}
+	
+	public ResponseEntity<ViewResponse> getStudents(long teacherId) {
+		SchoolMember schoolMember = schoolMemberRepository.findByIdAndRole(teacherId, SchoolMemberRole.TEACHER.toString());
+		if (schoolMember == null) {
+			throw new UserNotException(Constants.TEACHER_NOT_FOUND+teacherId);
+		}
+		List<Student> students = studentRepository.findByTeacher(schoolMember);
+		List<ViewStudent> studentData= new ArrayList<>();
+		
+		students.forEach(student ->{
+			ViewStudent viewStudent = new ViewStudent();
+			viewStudent.setId(student.getId());
+			viewStudent.setStudentName(student.getName());
+			viewStudent.setMotherName(student.getParentDetails().getMotherName());
+			viewStudent.setFatherName(student.getParentDetails().getFatherName());
+			viewStudent.setLocation(student.getParentDetails().getLandMark());
+			studentData.add(viewStudent);
+		});
+		
+		ViewResponse viewResponse = new ViewResponse();
+		viewResponse.setStatus(Constants.SUCCESS);
+		viewResponse.setData(studentData);
+		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	
 	}
 
 }

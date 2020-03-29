@@ -303,4 +303,6 @@ public class SchoolMemberService {
 		viewResponse.setMessage(Constants.MPIN_SAVE);
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
+	
+	
 }
