@@ -50,29 +50,29 @@ public class OtpService {
 
 		MemberOtp memberOtp = memberOtpRepository.findByMobileNumber(mobileNumber);
 		ViewResponse response = new ViewResponse();
-		response.setStatus(Constants.SUCCESS);
+		
 		if (memberOtp != null) {
 			response.setMessage(Constants.VERIFY_MPIN);
 		} else {
 			String otp = generateOtp(4);
 			String otpResponse = memberAdapter.sendOtp(getSmsApiUrl(mobileNumber, otp), mobileNumber);
 			if (otpResponse != null) {
-
 				MemberOtp newMemberOtp = new MemberOtp();
 				newMemberOtp.setCreatedTime(DateAndTimeUtil.now());
 				newMemberOtp.setMobileNumber(mobileNumber);
 				newMemberOtp.setOtp(otp);
 				newMemberOtp.setUpdatedTime(DateAndTimeUtil.now());
-				memberOtpRepository.save(newMemberOtp);
-				ViewUser viewUser = new ViewUser();
-				viewUser.setRole(schoolMember.getRole());
-				viewUser.setId(schoolMember.getId());
-				viewUser.setUserName(schoolMember.getName());
-				response.setId(schoolMember.getId());
-				response.setMessage(Constants.OTP_SENT);
-				response.setData(viewUser);
+				memberOtpRepository.save(newMemberOtp);				
+				response.setMessage(Constants.OTP_SENT);				
 			}
 		}
+		ViewUser viewUser = new ViewUser();
+		viewUser.setRole(schoolMember.getRole());
+		viewUser.setId(schoolMember.getId());
+		viewUser.setUserName(schoolMember.getName());
+		response.setId(schoolMember.getId());
+		response.setData(viewUser);
+		response.setStatus(Constants.SUCCESS);
 		return response;
 	}
 
