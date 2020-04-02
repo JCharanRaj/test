@@ -35,7 +35,7 @@ public class Constants {
 	public static final String OTP_SENT = "OTP sent";
 	public static final String OTP_VERIFIED = "Otp verified successfully";
 	public static final String INCORRECT_OTP = "incorrect otp";
-	public static final String OTP_MESSAGE ="<otp> is the Onetime password (OTP) for your login. Do not share this";
+	public static final String OTP_MESSAGE ="<otp> is the Onetime password (OTP) to complete installation process of My MIMS app";
 	
 	public static final String SMS_URL = "<sms url>?key=<sms key>&campaign=0&routeid=13&"
 			+ "type=text&contacts=<mobile number>&senderid=<sender id>&msg=<message>";
