@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.school.canvasing.command.CreateMemberCommand;
 import com.school.canvasing.command.CreateStudentCommand;
+import com.school.canvasing.command.GetStudentDetailsCommand;
 import com.school.canvasing.command.GetStudentsCommand;
 import com.school.canvasing.command.GetTeacherInfoCommand;
 import com.school.canvasing.command.GetTeachersCommand;
@@ -77,6 +78,9 @@ public class SchoolController {
 	
 	@Autowired
 	GetStudentsCommand getStudentsCommand;
+	
+	@Autowired
+	GetStudentDetailsCommand getStudentDetailsCommand;
 		
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
@@ -177,4 +181,11 @@ public class SchoolController {
 		return getStudentsCommand.execute(teacherId);
 	}
 	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
+	@GetMapping(value = "/getStudentDetails/{studentId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> getStudentDetails(@PathVariable Long studentId) {
+		return getStudentDetailsCommand.execute(studentId);
+	}
 }

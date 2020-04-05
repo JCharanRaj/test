@@ -27,6 +27,7 @@ import com.school.canvasing.repository.SchoolMemberRepository;
 import com.school.canvasing.repository.StudentRepository;
 import com.school.canvasing.request.CreateStudentRequest;
 import com.school.canvasing.request.StudentRequest;
+import com.school.canvasing.view.StudentDetails;
 import com.school.canvasing.view.ViewResponse;
 import com.school.canvasing.view.ViewStudent;
 
@@ -163,5 +164,34 @@ public class StudentService {
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	
 	}
-
+	
+	public ResponseEntity<ViewResponse> getStudentDetails(long studentId) {
+		Optional<Student> studentOptional = studentRepository.findById(studentId);
+		if (!studentOptional.isPresent()) {
+			throw new UserNotException(Constants.STUDENT_NOT_FOUND+studentId);
+		}
+		Student student = studentOptional.get();
+		StudentDetails studentDetails= new StudentDetails();
+		studentDetails.setAdmissionClass(student.getAdmissionClass());
+		studentDetails.setAge(student.getAge());
+		studentDetails.setDateOfBirth(student.getDateOfBirth());
+		studentDetails.setFatherName(student.getParentDetails().getFatherName());
+		studentDetails.setGender(student.getGender());
+		studentDetails.setLocation(student.getParentDetails().getLandMark());
+		studentDetails.setId(student.getId());
+		studentDetails.setMotherName(student.getParentDetails().getMotherName());
+		studentDetails.setParentOrGuardianRemark(student.getParentOrGuardianRemark());
+		studentDetails.setPreviousClass(student.getPreviousClass());
+		studentDetails.setPreviousSchool(student.getPreviousSchool());
+		studentDetails.setStudentName(student.getName());
+		studentDetails.setWillingness(student.getWillingness());
+		
+		
+		ViewResponse viewResponse = new ViewResponse();
+		viewResponse.setStatus(Constants.SUCCESS);
+		viewResponse.setData(studentDetails);
+		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	
+	}
+	
 }

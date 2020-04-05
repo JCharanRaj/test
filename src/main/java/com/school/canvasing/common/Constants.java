@@ -26,6 +26,7 @@ public class Constants {
 	public static final String STUDENT_EXISTS = "Student already exists with this parent";
 	public static final String USER_LOGOUT = "<role> logout successfully";
 	public static final String TEACHER_NOT_FOUND = "No Teacher found with id: ";
+	public static final String STUDENT_NOT_FOUND = "No Student found with id: ";
 	public static final int AADHAR_LENGTH = 12;
 	
 	public static final String AADHAR ="Aadhar number must be 12 charecters";
