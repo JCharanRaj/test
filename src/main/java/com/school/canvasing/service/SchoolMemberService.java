@@ -29,7 +29,9 @@ import com.school.canvasing.repository.TeacherLocationRepository;
 import com.school.canvasing.request.CreateMemberRequest;
 import com.school.canvasing.request.LoginRequest;
 import com.school.canvasing.request.MpinRequest;
+import com.school.canvasing.request.UpdateMpinRequest;
 import com.school.canvasing.request.UpdateTeacherLocation;
+import com.school.canvasing.view.TeacherDetails;
 import com.school.canvasing.view.ViewResponse;
 import com.school.canvasing.view.ViewTeacher;
 import com.school.canvasing.view.ViewTeacherInfo;
@@ -304,5 +306,40 @@ public class SchoolMemberService {
 		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
 	}
 	
+	public ResponseEntity<ViewResponse> updateMpin(UpdateMpinRequest request) {
+		Optional<SchoolMember> schoolMembeOptional = schoolMemberRepository.findById(request.getId());
+		if (!schoolMembeOptional.isPresent()) {
+			throw new UserNotException(Constants.USER_NOT_FOUND);
+		}
+
+		SchoolMember schoolMember =schoolMembeOptional.get();
+		schoolMember.setMpin(request.getMpin());
+		schoolMember.setPassword(request.getMpin());
+		schoolMember.setUpdatedTime(DateAndTimeUtil.now());
+		schoolMemberRepository.save(schoolMember);
+		ViewResponse viewResponse = new ViewResponse();
+		viewResponse.setId(schoolMember.getId());
+		viewResponse.setStatus(Constants.SUCCESS);
+		viewResponse.setMessage(Constants.UPDATE_MPIN);
+		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	}
+	
+	public ResponseEntity<ViewResponse> getTeacherDetails(long id) {
+		Optional<SchoolMember> schoolMembeOptional = schoolMemberRepository.findById(id);
+		if (!schoolMembeOptional.isPresent()) {
+			throw new UserNotException(Constants.USER_NOT_FOUND);
+		}
+		SchoolMember schoolMember =schoolMembeOptional.get();
+		TeacherDetails teacherDetails = new TeacherDetails();
+		teacherDetails.setId(schoolMember.getId());
+		teacherDetails.setMobileNumber(schoolMember.getMobileNumber());
+		teacherDetails.setName(schoolMember.getName());
+		teacherDetails.setRole(schoolMember.getRole());
+		ViewResponse viewResponse = new ViewResponse();
+		viewResponse.setId(schoolMember.getId());
+		viewResponse.setStatus(Constants.SUCCESS);
+		viewResponse.setData(teacherDetails);
+		return ResponseEntity.status(HttpStatus.OK).body(viewResponse);
+	}
 	
 }

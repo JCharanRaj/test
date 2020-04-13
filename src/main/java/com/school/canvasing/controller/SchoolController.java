@@ -17,6 +17,7 @@ import com.school.canvasing.command.CreateMemberCommand;
 import com.school.canvasing.command.CreateStudentCommand;
 import com.school.canvasing.command.GetStudentDetailsCommand;
 import com.school.canvasing.command.GetStudentsCommand;
+import com.school.canvasing.command.GetTeacherDetailsCommand;
 import com.school.canvasing.command.GetTeacherInfoCommand;
 import com.school.canvasing.command.GetTeachersCommand;
 import com.school.canvasing.command.LoginSchoolMemberCommand;
@@ -24,6 +25,7 @@ import com.school.canvasing.command.LogoutCommand;
 import com.school.canvasing.command.MpinCommand;
 import com.school.canvasing.command.ResendOtpCommand;
 import com.school.canvasing.command.SendOtpCommand;
+import com.school.canvasing.command.UpdateMpinCommand;
 import com.school.canvasing.command.UpdateTeacherLocationCommand;
 import com.school.canvasing.command.VerifyOtpCommand;
 import com.school.canvasing.exception.ErrorResponse;
@@ -31,6 +33,7 @@ import com.school.canvasing.request.CreateMemberRequest;
 import com.school.canvasing.request.CreateStudentRequest;
 import com.school.canvasing.request.LoginRequest;
 import com.school.canvasing.request.MpinRequest;
+import com.school.canvasing.request.UpdateMpinRequest;
 import com.school.canvasing.request.UpdateTeacherLocation;
 import com.school.canvasing.request.VerifyOtpRequest;
 import com.school.canvasing.view.ViewResponse;
@@ -81,7 +84,13 @@ public class SchoolController {
 	
 	@Autowired
 	GetStudentDetailsCommand getStudentDetailsCommand;
-		
+	
+	@Autowired
+	UpdateMpinCommand updateMpinCommand;
+	
+	@Autowired
+	GetTeacherDetailsCommand getTeacherDetailsCommand;
+	
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
@@ -188,4 +197,21 @@ public class SchoolController {
 	public ResponseEntity<ViewResponse> getStudentDetails(@PathVariable Long studentId) {
 		return getStudentDetailsCommand.execute(studentId);
 	}
+	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
+	@PostMapping(value = "/updateMpin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> verifyOtp(@RequestBody UpdateMpinRequest mpinRequest) {
+		return updateMpinCommand.execute(mpinRequest);
+	}
+	
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, response = ViewResponse.class, message = "Generate OTP"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, response = ErrorResponse.class, message = "Invalid parameters") })
+	@GetMapping(value = "/getTeacherDetails/{teacherId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<ViewResponse> getTeacherDetails(@PathVariable Long teacherId) {
+		return getTeacherDetailsCommand.execute(teacherId);
+	}
+	
 }

@@ -43,5 +43,6 @@ public class Constants {
 	public static final String OTP_EXCEPTION_MESSAGE = "We are unable to send otp to your mobile::";
 
 	public static final String MPIN_SAVE = "Teacher mpin saved successfully..!";
+	public static final String UPDATE_MPIN = "Teacher mpin updated successfully..!";
 	
 }
