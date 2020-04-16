@@ -173,6 +173,7 @@ public class StudentService {
 		Student student = studentOptional.get();
 		StudentDetails studentDetails= new StudentDetails();
 		studentDetails.setAdmissionClass(student.getAdmissionClass());
+		studentDetails.setRelationship(student.getRelationship());
 		studentDetails.setAge(student.getAge());
 		studentDetails.setDateOfBirth(student.getDateOfBirth());
 		studentDetails.setFatherName(student.getParentDetails().getFatherName());

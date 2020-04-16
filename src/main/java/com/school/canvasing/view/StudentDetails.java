@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.school.canvasing.common.Gender;
 
 public class StudentDetails {
+	
 	private long id;
 	private String studentName;
 	private String motherName;
@@ -18,7 +19,8 @@ public class StudentDetails {
 	private String admissionClass;
 	private String parentOrGuardianRemark;
 	private String willingness;
-
+	private String relationship;
+	
 	public long getId() {
 		return id;
 	}
@@ -121,6 +123,14 @@ public class StudentDetails {
 
 	public void setWillingness(String willingness) {
 		this.willingness = willingness;
+	}
+
+	public String getRelationship() {
+		return relationship;
+	}
+
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
 	}
 
 }
