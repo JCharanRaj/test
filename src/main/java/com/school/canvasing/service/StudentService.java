@@ -172,22 +172,31 @@ public class StudentService {
 		}
 		Student student = studentOptional.get();
 		StudentDetails studentDetails= new StudentDetails();
-		studentDetails.setAdmissionClass(student.getAdmissionClass());
+		//parent Detials
+		ParentDetails parentDetails = student.getParentDetails();
+
+		studentDetails.setFatherName(parentDetails.getFatherName());
+        studentDetails.setFatherAadharNO(parentDetails.getFatherAadhar());
+        studentDetails.setFatherMobileNO(parentDetails.getFatherMobile());
+		studentDetails.setMotherName(parentDetails.getMotherName());
+		studentDetails.setMotherAadharNO(parentDetails.getMotherAadhar());
+		studentDetails.setMotherMobileNO(parentDetails.getMotherMobile());
+		studentDetails.setAddress(parentDetails.getAddress());
+        studentDetails.setDoorNO(parentDetails.getDoorNo());
+        studentDetails.setLandmark(parentDetails.getLandMark());
+
+        studentDetails.setStudentName(student.getName());
 		studentDetails.setRelationship(student.getRelationship());
 		studentDetails.setAge(student.getAge());
 		studentDetails.setDateOfBirth(student.getDateOfBirth());
-		studentDetails.setFatherName(student.getParentDetails().getFatherName());
 		studentDetails.setGender(student.getGender());
-		studentDetails.setLocation(student.getParentDetails().getLandMark());
 		studentDetails.setId(student.getId());
-		studentDetails.setMotherName(student.getParentDetails().getMotherName());
 		studentDetails.setParentOrGuardianRemark(student.getParentOrGuardianRemark());
 		studentDetails.setPreviousClass(student.getPreviousClass());
 		studentDetails.setPreviousSchool(student.getPreviousSchool());
-		studentDetails.setStudentName(student.getName());
+		studentDetails.setAdmissionClass(student.getAdmissionClass());
 		studentDetails.setWillingness(student.getWillingness());
-		
-		
+
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setData(studentDetails);

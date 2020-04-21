@@ -8,9 +8,16 @@ public class StudentDetails {
 	
 	private long id;
 	private String studentName;
-	private String motherName;
+
 	private String fatherName;
-	private String location;
+	private String fatherAadharNO;
+	private String fatherMobileNO;
+	private String motherName;
+	private String motherAadharNO;
+	private String motherMobileNO;
+	private String address;
+	private String doorNO;
+	private String landmark;
 	private long age;
 	private Gender gender;
 	private LocalDate dateOfBirth;
@@ -20,7 +27,63 @@ public class StudentDetails {
 	private String parentOrGuardianRemark;
 	private String willingness;
 	private String relationship;
-	
+
+	public String getFatherAadharNO() {
+		return fatherAadharNO;
+	}
+
+	public void setFatherAadharNO(String fatherAadharNO) {
+		this.fatherAadharNO = fatherAadharNO;
+	}
+
+	public String getFatherMobileNO() {
+		return fatherMobileNO;
+	}
+
+	public void setFatherMobileNO(String fatherMobileNO) {
+		this.fatherMobileNO = fatherMobileNO;
+	}
+
+	public String getMotherAadharNO() {
+		return motherAadharNO;
+	}
+
+	public void setMotherAadharNO(String motherAadharNO) {
+		this.motherAadharNO = motherAadharNO;
+	}
+
+	public String getMotherMobileNO() {
+		return motherMobileNO;
+	}
+
+	public void setMotherMobileNO(String motherMobileNO) {
+		this.motherMobileNO = motherMobileNO;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getDoorNO() {
+		return doorNO;
+	}
+
+	public void setDoorNO(String doorNO) {
+		this.doorNO = doorNO;
+	}
+
+	public String getLandmark() {
+		return landmark;
+	}
+
+	public void setLandmark(String landmark) {
+		this.landmark = landmark;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -51,14 +114,6 @@ public class StudentDetails {
 
 	public void setFatherName(String fatherName) {
 		this.fatherName = fatherName;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public long getAge() {
