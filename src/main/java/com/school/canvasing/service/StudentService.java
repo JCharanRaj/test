@@ -184,7 +184,6 @@ public class StudentService {
 		studentDetails.setAddress(parentDetails.getAddress());
         studentDetails.setDoorNO(parentDetails.getDoorNo());
         studentDetails.setLandmark(parentDetails.getLandMark());
-
         studentDetails.setStudentName(student.getName());
 		studentDetails.setRelationship(student.getRelationship());
 		studentDetails.setAge(student.getAge());
@@ -195,8 +194,9 @@ public class StudentService {
 		studentDetails.setPreviousClass(student.getPreviousClass());
 		studentDetails.setPreviousSchool(student.getPreviousSchool());
 		studentDetails.setAdmissionClass(student.getAdmissionClass());
-		studentDetails.setWillingness(student.getWillingness());
-
+		studentDetails.setWillingness(student.getWillingness());	
+		studentDetails.setNoOfChildren(parentDetails.getNoOfChildren());
+		
 		ViewResponse viewResponse = new ViewResponse();
 		viewResponse.setStatus(Constants.SUCCESS);
 		viewResponse.setData(studentDetails);
